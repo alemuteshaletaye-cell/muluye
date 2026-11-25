@@ -1,0 +1,2884 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>የኢትዮጵያ ሙሉወንጌል አማኞች ቤተክርስቲያን - የቦሌ አጥብያ | ዲጂታል ሲስተም</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --fgbc-blue: #0066B3;
+      --fgbc-dark: #003B6F;
+      --fgbc-deep: #002347;
+      --fgbc-pink: #D84374;
+    }
+
+    body {
+      font-family: 'Noto Sans Ethiopic', 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(160deg, #E6F0FA 0%, #D3E4F7 50%, #EBF3FC 100%);
+      color: #0F172A;
+      overflow-x: hidden;
+    }
+
+    /* ================= 1. WHITE SPLASH SCREEN WITH LOGO & DOCTRINE VERSE ================= */
+    #splash-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.85s ease;
+    }
+
+    #splash-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    @keyframes logoScaleReveal {
+      0% { opacity: 0; transform: scale(0.3) translateY(30px); filter: blur(10px); }
+      55% { opacity: 1; transform: scale(1.07) translateY(0); filter: blur(0px); }
+      78% { transform: scale(0.97); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes ringExpand {
+      0% { transform: scale(0.65); opacity: 0.75; }
+      100% { transform: scale(1.7); opacity: 0; }
+    }
+
+    @keyframes textRise {
+      0% { opacity: 0; transform: translateY(18px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes progressFill {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .splash-logo-wrap { position: relative; animation: logoScaleReveal 1.65s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .splash-ring { position: absolute; inset: -14px; border-radius: 9999px; border: 2.5px solid rgba(0, 102, 179, 0.28); animation: ringExpand 2s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+    .splash-text { opacity: 0; animation: textRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.65s forwards; }
+    .splash-loader-bar { animation: progressFill 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+    /* ================= 2. AMBIENT & DAILY WORD EXPRESSIVE ANIMATIONS ================= */
+    @keyframes doveHover {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-3px) rotate(-1.5deg); }
+    }
+    @keyframes crossPulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 0px rgba(216, 67, 116, 0)); }
+      50% { filter: drop-shadow(0 0 8px rgba(216, 67, 116, 0.6)); }
+    }
+    @keyframes floatBlob {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(24px, -18px) scale(1.07); }
+    }
+    @keyframes cardEnter {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes holoShimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    @keyframes scriptureReveal {
+      0% { opacity: 0; transform: translateY(12px) scale(0.98); filter: blur(4px); }
+      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+    @keyframes verseGlowPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(216, 67, 116, 0.15); }
+      50% { box-shadow: 0 0 0 6px rgba(216, 67, 116, 0); }
+    }
+    @keyframes tickerSlide {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes badgePop {
+      0% { opacity: 0; transform: scale(0.9) translateY(12px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .svg-dove { animation: doveHover 3.5s ease-in-out infinite; transform-origin: center; }
+    .svg-cross { animation: crossPulseGlow 3s ease-in-out infinite; }
+    .ambient-blob { animation: floatBlob 12s ease-in-out infinite; }
+    .animate-card { animation: cardEnter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .delay-1 { animation-delay: 0.06s; }
+    .delay-2 { animation-delay: 0.12s; }
+    .scripture-animate { animation: scriptureReveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .verse-badge-pulse { animation: verseGlowPulse 2.8s infinite; }
+    .modal-pop { animation: badgePop 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+    .ticker-wrap { overflow: hidden; white-space: nowrap; position: relative; }
+    .ticker-track { display: inline-flex; animation: tickerSlide 28s linear infinite; }
+    .ticker-wrap:hover .ticker-track { animation-play-state: paused; }
+
+    .royal-header { background: linear-gradient(135deg, #002347 0%, #003B6F 55%, #005596 100%); }
+    .blue-glass-card {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 102, 179, 0.16);
+      box-shadow: 0 14px 34px -10px rgba(0, 35, 71, 0.14);
+    }
+    .royal-card-dark {
+      background: linear-gradient(145deg, #003B6F 0%, #005596 100%);
+      color: #FFFFFF;
+      box-shadow: 0 14px 30px -8px rgba(0, 59, 111, 0.35);
+    }
+    .holo-id-card {
+      background: linear-gradient(135deg, #002347 0%, #004E92 52%, #0066B3 100%);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 18px 36px -10px rgba(0, 35, 71, 0.45);
+    }
+    .holo-id-card:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 22px 42px -10px rgba(0, 59, 111, 0.55); }
+    .holo-id-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.22) 48%, rgba(216,67,116,0.25) 52%, transparent 70%);
+      background-size: 200% 100%;
+      animation: holoShimmer 4.5s linear infinite;
+      pointer-events: none;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      body.print-badge-mode #badge-printable-area, body.print-badge-mode #badge-printable-area * { visibility: visible; }
+      body.print-badge-mode #badge-printable-area {
+        position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+        width: 360px; background: white !important; box-shadow: none !important;
+      }
+      body.print-sheet-mode #printable-sheet-modal, body.print-sheet-mode #printable-sheet-modal * { visibility: visible; }
+      body.print-sheet-mode #printable-sheet-modal { position: fixed; inset: 0; background: white !important; padding: 0 !important; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen relative selection:bg-blue-200 selection:text-blue-950">
+
+  <!-- ================= 1. WHITE SPLASH SCREEN WITH DOCTRINE VERSE ================= -->
+  <div id="splash-screen">
+    <div class="splash-logo-wrap mb-5">
+      <div class="splash-ring"></div>
+      <svg width="138" height="138" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="92" fill="white" stroke="#0066B3" stroke-width="5"/>
+        <path class="svg-dove" d="M63 108V91C50 93 36 86 26 73C41 72 52 66 59 54C57 44 63 35 73 35C79 35 84 38 87 42L95 43L88 49C88 57 93 64 103 66C112 68 122 65 130 60" stroke="#0066B3" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="svg-dove" d="M75 91V106" stroke="#0066B3" stroke-width="4.5" stroke-linecap="round"/>
+        <circle cx="72" cy="44" r="3" fill="#0066B3"/>
+        <path d="M46 112C63 104 83 106 100 116C117 106 137 104 154 112V156C137 148 117 150 100 158C83 150 63 148 46 156V112Z" fill="white" stroke="#0066B3" stroke-width="4.5" stroke-linejoin="round"/>
+        <path d="M100 116V158" stroke="#0066B3" stroke-width="4"/>
+        <path class="svg-cross" d="M132 24H146V64H180V78H146V172H132V78H98V64H132V24Z" fill="#D84374"/>
+      </svg>
+    </div>
+
+    <div class="splash-text text-center px-6 max-w-lg">
+      <p class="text-xs font-bold tracking-widest uppercase text-[#D84374] mb-1">እንኳን በደህና መጡ</p>
+      <h1 class="text-xl sm:text-2xl font-extrabold text-[#003B6F] leading-snug">
+        የኢትዮጵያ ሙሉወንጌል አማኞች ቤተክርስቲያን
+      </h1>
+      <p class="text-sm font-semibold text-[#0066B3] mt-0.5">የቦሌ አጥብያ — ዲጂታል አስተዳደር ሲስተም</p>
+
+      <!-- Always-Visible Doctrine Motto Verse -->
+      <div class="mt-4 px-4 py-2.5 rounded-2xl bg-blue-50/90 border border-blue-200/80">
+        <p class="text-xs font-extrabold text-[#003B6F]">“ኢየሱስ ክርስቶስ ትናንትና ዛሬ እስከ ለዘላለምም ያው ነው።”</p>
+        <p class="text-[11px] font-bold text-[#D84374] mt-0.5">ወደ ዕብራውያን 13፡8</p>
+      </div>
+
+      <div class="w-48 h-1.5 bg-slate-100 rounded-full mx-auto mt-5 overflow-hidden">
+        <div class="splash-loader-bar h-full bg-gradient-to-r from-[#0066B3] to-[#D84374] rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ambient Royal Blue Glow Shapes -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+    <div class="ambient-blob absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full bg-[#0066B3]/20 blur-3xl"></div>
+    <div class="ambient-blob absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-[#003B6F]/15 blur-3xl" style="animation-delay: 4s;"></div>
+  </div>
+
+  <!-- ================= 2. ROYAL BLUE HEADER WITH ALWAYS-VISIBLE DOCTRINE BANNER ================= -->
+  <header class="sticky top-0 z-40 royal-header text-white border-b border-blue-400/20 shadow-lg">
+    <!-- Permanent Church Doctrine Motto Strip (Hebrews 13:8) -->
+    <div class="bg-[#001833] text-blue-100 border-b border-white/10 px-4 py-1.5 text-center">
+      <p class="text-[11px] sm:text-xs font-bold tracking-wide flex flex-wrap items-center justify-center gap-1.5">
+        <span class="px-2 py-0.2 rounded bg-[#D84374] text-white text-[10px] font-extrabold">መሪ ቃል</span>
+        <span>“ኢየሱስ ክርስቶስ ትናንትና ዛሬ እስከ ለዘላለምም ያው ነው።”</span>
+        <span class="text-amber-300 font-extrabold">— ወደ ዕብራውያን 13፡8</span>
+      </p>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-full bg-white shadow-md border-2 border-blue-200 flex items-center justify-center shrink-0">
+          <svg width="36" height="36" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="92" stroke="#0066B3" stroke-width="6"/>
+            <path class="svg-dove" d="M63 108V91C50 93 36 86 26 73C41 72 52 66 59 54C57 44 63 35 73 35C79 35 84 38 87 42L95 43L88 49C88 57 93 64 103 66" stroke="#0066B3" stroke-width="5.5" stroke-linecap="round"/>
+            <path d="M46 112C63 104 83 106 100 116C117 106 137 104 154 112V156C137 148 117 150 100 158C83 150 63 148 46 156V112Z" fill="white" stroke="#0066B3" stroke-width="5.5"/>
+            <path class="svg-cross" d="M132 24H146V64H180V78H146V172H132V78H98V64H132V24Z" fill="#D84374"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-sm sm:text-base font-extrabold text-white leading-tight">የኢትዮጵያ ሙሉወንጌል አማኞች ቤተክርስቲያን</h1>
+            <span id="active-portal-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-white/15 text-blue-100 border border-white/25">
+              የምዕመናን መግቢያ
+            </span>
+          </div>
+          <p class="text-xs font-semibold text-blue-200">የቦሌ አጥብያ (Bole Local Church)</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="btn-print-sheet" onclick="openPrintableSheet()" class="hidden inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-white/15 hover:bg-white/25 text-white border border-white/20 transition">
+          <i data-lucide="printer" class="w-3.5 h-3.5 text-blue-200"></i>
+          <span class="hidden sm:inline">የህትመት ወረቀት (Print)</span>
+        </button>
+        <button onclick="replaySplash()" class="p-2 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 transition" title="የመግቢያ አኒሜሽን">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Toast Notification -->
+  <div id="toast-box" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div id="toast-content" class="flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl bg-[#002347] text-white text-sm font-semibold border border-blue-400/30">
+      <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+      <span id="toast-msg">ተሳክቷል!</span>
+    </div>
+  </div>
+
+  <!-- ================= 3. MAIN ISOLATED PORTALS ================= -->
+  <main class="max-w-7xl mx-auto px-4 py-6 pb-20">
+
+    <!-- ==================== PORTAL 1: MEMBER ENTRY (REGISTRATION & LOGIN) ==================== -->
+    <section id="view-member-auth" class="max-w-xl mx-auto mt-3">
+      <div class="blue-glass-card rounded-3xl overflow-hidden animate-card">
+        <div class="royal-header text-white p-6 text-center">
+          <div class="w-14 h-14 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center mx-auto mb-3">
+            <i data-lucide="user-plus" class="w-7 h-7 text-white"></i>
+          </div>
+          <h2 class="text-xl font-extrabold">የቦሌ አጥብያ ምዕመናን መመዝገቢያ እና መግቢያ</h2>
+          <p class="text-xs text-blue-200 mt-1">ፎቶዎን አስገብተው ይመዝገቡ፤ እውነተኛ QR ኮድ ያለው የአባልነት ባጅ ይሰጥዎታል።</p>
+
+          <div class="inline-flex bg-blue-950/70 p-1 rounded-xl border border-white/15 text-xs font-bold mt-4">
+            <button onclick="toggleAuthTab('register')" id="auth-tab-register" class="px-4 py-1.5 rounded-lg bg-[#0066B3] text-white transition">አዲስ ምዝገባ</button>
+            <button onclick="toggleAuthTab('login')" id="auth-tab-login" class="px-4 py-1.5 rounded-lg text-blue-200 hover:text-white transition">መግቢያ (Login)</button>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <form id="member-register-form" onsubmit="registerNewMember(event)" class="space-y-4">
+            <div class="flex items-center gap-4 p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200/80">
+              <div class="w-16 h-16 rounded-2xl bg-white border-2 border-[#0066B3]/30 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
+                <img id="reg-photo-preview" src="" alt="Member Photo" class="hidden w-full h-full object-cover" />
+                <i id="reg-photo-placeholder" data-lucide="camera" class="w-6 h-6 text-[#0066B3]"></i>
+              </div>
+              <div class="flex-1">
+                <label class="block text-xs font-extrabold text-[#003B6F] mb-1">የአባሉ ፎቶ ያስገቡ (አማራጭ / ለባጅ)</label>
+                <input id="reg-photo-input" type="file" accept="image/*" onchange="handlePhotoUpload(event)" class="block w-full text-[11px] text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#0066B3] file:text-white hover:file:bg-[#003B6F] cursor-pointer" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">ሙሉ ስም (ከነአያት) <span class="text-[#D84374]">*</span></label>
+                <input id="reg-fullname" type="text" required placeholder="ለምሳሌ ዳዊት ተስፋዬ ገብሬ" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">ስልክ ቁጥር <span class="text-[#D84374]">*</span></label>
+                <input id="reg-phone" type="tel" required placeholder="0911223344" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">መኖሪያ ሰፈር / ክፍለ ከተማ <span class="text-[#D84374]">*</span></label>
+                <input id="reg-address" type="text" required placeholder="ለምሳሌ ቦሌ ሚካኤል / ገርጂ" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/40" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">የይለፍ ቃል (Password) <span class="text-[#D84374]">*</span></label>
+                <input id="reg-password" type="password" required minlength="4" placeholder="ቢያንስ 4 ቁጥር/ፊደል" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/40" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">ለመቀላቀል የሚፈልጉትን ህብረት ይምረጡ (አማራጭ)</label>
+              <select id="reg-initial-dept" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40">
+                <option value="">ለጊዜው አልመርጥም (የመጋቢውን መልዕክት ብቻ ማየት እፈልጋለሁ)</option>
+                <option value="choir">የመዘምራን አገልግሎት (የመሪ ፈቃድ ይጠይቃል)</option>
+                <option value="youth">የወጣቶች ህብረት (የመሪ ፈቃድ ይጠይቃል)</option>
+                <option value="deacons">የዲያቆናት ህብረት (የመሪ ፈቃድ ይጠይቃል)</option>
+                <option value="children">የህፃናት አገልግሎት (የመሪ ፈቃድ ይጠይቃል)</option>
+              </select>
+              <p class="text-[11px] text-slate-500 mt-1">ህብረት ቢመርጡም <strong>የህብረቱ መሪ ፈቃድ እስኪሰጥ ድረስ</strong> የመጋቢውን እና የቤተክርስቲያኒቱን አጠቃላይ መልዕክት ብቻ ያያሉ።</p>
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs sm:text-sm font-extrabold shadow-md hover:opacity-95 transition">
+              ተመዝግቤ ወደ ምዕመናን ገጽ ልግባ →
+            </button>
+          </form>
+
+          <form id="member-login-form" onsubmit="loginExistingMember(event)" class="hidden space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">የተመዘገቡበት ስልክ ቁጥር</label>
+              <input id="login-member-phone" type="tel" required placeholder="0911223344" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">የይለፍ ቃል (Password)</label>
+              <input id="login-member-pass" type="password" required placeholder="የይለፍ ቃልዎን ያስገቡ" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/40" />
+            </div>
+            <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs sm:text-sm font-extrabold shadow-md hover:opacity-95 transition">
+              ወደ ገጼ ግባ (Login) →
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PORTAL 2: MEMBER DASHBOARD ==================== -->
+    <section id="view-member" class="hidden">
+      <div class="blue-glass-card rounded-2xl px-5 py-3 mb-6 flex flex-wrap items-center justify-between gap-3 border-l-4 border-l-[#0066B3]">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <p class="text-xs font-bold text-[#003B6F]">
+            ሰላም <span id="topbar-member-name" class="font-extrabold text-[#0066B3]"></span> — እንኳን በደህና መጡ!
+          </p>
+        </div>
+        <button onclick="logoutMember()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white text-xs font-bold transition">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          ውጣ (Logout)
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- LEFT SIDEBAR -->
+        <aside class="lg:col-span-4 space-y-5">
+          <!-- CLICKABLE 3D DIGITAL BADGE CARD -->
+          <div onclick="openMemberBadgeModal()" class="holo-id-card rounded-3xl p-5 text-white animate-card group" title="ዲጂታል ባጅዎን ለመክፈት ይንኩ">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow">
+                  <span class="text-xs font-black text-[#0066B3]">FGBC</span>
+                </div>
+                <div>
+                  <p class="text-[10px] uppercase tracking-wider text-blue-200">የአባልነት መታወቂያ ባጅ</p>
+                  <p class="text-xs font-bold">የቦሌ አጥብያ</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/15 border border-white/25 group-hover:bg-white group-hover:text-[#003B6F] transition">
+                ባጅ ክፈት ↗
+              </span>
+            </div>
+
+            <div class="my-3 flex items-center gap-3.5">
+              <div class="w-14 h-14 rounded-2xl bg-white/15 border-2 border-white/40 overflow-hidden flex items-center justify-center shrink-0">
+                <img id="member-card-photo" src="" alt="Avatar" class="hidden w-full h-full object-cover" />
+                <i id="member-card-photo-icon" data-lucide="user" class="w-7 h-7 text-blue-100"></i>
+              </div>
+              <div>
+                <h2 id="member-card-fullname" class="text-lg font-extrabold tracking-tight leading-tight">—</h2>
+                <p class="text-xs text-blue-200 mt-0.5">መለያ: <span id="member-card-id" class="font-mono font-bold text-white"></span></p>
+              </div>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-white/10 border border-white/15 text-[11px] text-blue-100 mb-3 flex items-center gap-2">
+              <i data-lucide="qr-code" class="w-4 h-4 text-amber-300 shrink-0"></i>
+              <span>ባጅዎን ለመክፈት፣ ለማተም ወይም ዳውንሎድ ለማድረግ እዚህ ይንኩ።</span>
+            </div>
+
+            <div class="flex items-center justify-between pt-2.5 border-t border-white/15 text-xs">
+              <div>
+                <p class="text-blue-200 text-[10px]">የጸደቁ ህብረቶች</p>
+                <p id="id-card-dept-count" class="font-bold">0 ህብረት</p>
+              </div>
+              <div id="mini-qr-container" class="bg-white p-1 rounded-lg shadow"></div>
+            </div>
+          </div>
+
+          <!-- Ministry Membership -->
+          <div class="blue-glass-card rounded-3xl p-5 animate-card delay-1">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-extrabold text-[#003B6F] flex items-center gap-2 text-sm">
+                <i data-lucide="users" class="w-4 h-4 text-[#0066B3]"></i>
+                የቤተክርስቲያን ህብረቶች
+              </h3>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-[#003B6F]">በመሪ ፈቃድ</span>
+            </div>
+            <p class="text-[11px] text-slate-500 mb-3.5 leading-relaxed">
+              የህብረቱ መሪ ፈቃድ እስኪሰጥ ድረስ የመጋቢውን እና የቤተክርስቲያኒቱን አጠቃላይ መልዕክት ብቻ ይመለከታሉ።
+            </p>
+            <div id="member-departments-list" class="space-y-2.5"></div>
+          </div>
+
+          <!-- Tithe & Offering -->
+          <div class="blue-glass-card rounded-3xl p-5 animate-card delay-2">
+            <h3 class="font-extrabold text-[#003B6F] flex items-center gap-2 text-sm mb-3">
+              <i data-lucide="heart-handshake" class="w-4 h-4 text-[#D84374]"></i>
+              አስራት እና መባ መስጫ
+            </h3>
+
+            <div class="space-y-2 mb-3.5">
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#003B6F] text-white">
+                <div>
+                  <p class="text-[10px] font-bold text-blue-200">ንግድ ባንክ (CBE)</p>
+                  <p class="font-mono text-xs font-extrabold">1000294857362</p>
+                </div>
+                <button onclick="copyText('1000294857362', 'የCBE አካውንት ቁጥር ተቀድቷል')" class="px-2.5 py-1 rounded-lg bg-white/15 hover:bg-white hover:text-[#003B6F] text-xs font-bold transition">
+                  ኮፒ
+                </button>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#0066B3] text-white">
+                <div>
+                  <p class="text-[10px] font-bold text-blue-100">ቴሌብር (Telebirr)</p>
+                  <p class="font-mono text-xs font-extrabold">0911223344</p>
+                </div>
+                <button onclick="copyText('0911223344', 'የቴሌብር ቁጥር ተቀድቷል')" class="px-2.5 py-1 rounded-lg bg-white/15 hover:bg-white hover:text-[#003B6F] text-xs font-bold transition">
+                  ኮፒ
+                </button>
+              </div>
+            </div>
+
+            <form onsubmit="submitTithe(event)" class="space-y-2.5">
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-600 mb-1">የስጦታ ዓይነት</label>
+                  <select id="tithe-type" class="w-full px-2.5 py-2 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40">
+                    <option value="አስራት (Tithe)">አስራት (Tithe)</option>
+                    <option value="መባ (Offering)">መባ (Offering)</option>
+                    <option value="የህንፃ ግንባታ">የህንፃ ግንባታ</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-600 mb-1">መጠን (ብር)</label>
+                  <input id="tithe-amount" type="number" required min="10" placeholder="1500" class="w-full px-2.5 py-2 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[10px] font-bold text-slate-600 mb-1">
+                  Transaction Reference No. <span class="text-[#D84374]">*</span>
+                </label>
+                <input id="tithe-ref" type="text" required placeholder="ለምሳሌ FT26329ABC" class="w-full px-3 py-2 rounded-xl border border-blue-200 text-xs font-mono uppercase bg-blue-50/40" />
+              </div>
+
+              <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
+                ደረሰኝ ለፋይናንስ ላክ
+              </button>
+            </form>
+
+            <div id="member-receipts-list" class="mt-3.5 pt-3 border-t border-blue-100 space-y-1.5"></div>
+          </div>
+        </aside>
+
+        <!-- RIGHT MAIN AREA -->
+        <div class="lg:col-span-8 space-y-6">
+          <!-- Pastor Direct Personal Messages to This Member (If Any) -->
+          <div id="member-direct-messages-box" class="hidden blue-glass-card rounded-3xl p-5 border-l-4 border-l-[#D84374] animate-card">
+            <h3 class="text-sm font-extrabold text-[#003B6F] flex items-center gap-2 mb-2.5">
+              <i data-lucide="mail" class="w-4 h-4 text-[#D84374]"></i>
+              ከመጋቢው በቀጥታ ለእርስዎ የተላኩ መልዕክቶች
+            </h3>
+            <div id="member-direct-messages-list" class="space-y-2"></div>
+          </div>
+
+          <!-- Pastor Daily Message + Programs Ticker -->
+          <div class="blue-glass-card rounded-3xl overflow-hidden animate-card">
+            <div class="bg-gradient-to-r from-[#002347] via-[#003B6F] to-[#0066B3] px-6 py-4 flex flex-wrap items-center justify-between gap-2 text-white">
+              <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center">
+                  <i data-lucide="book-open-check" class="w-4 h-4 text-amber-300"></i>
+                </span>
+                <div>
+                  <span class="text-xs font-extrabold block">የመጋቢው የዕለቱ መንፈሳዊ መልዕክት</span>
+                  <span class="text-[10px] text-blue-200">ለሁሉም የቦሌ አጥብያ ቅዱሳን የተላለፈ</span>
+                </div>
+              </div>
+              <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-white/15 border border-white/20">ዛሬ • ህዳር 16</span>
+            </div>
+
+            <div class="bg-[#001B36] text-blue-100 py-2 px-4 border-b border-blue-400/20 flex items-center gap-3">
+              <span class="px-2 py-0.5 rounded-md bg-[#D84374] text-white text-[10px] font-extrabold shrink-0 animate-pulse">
+                ፕሮግራሞች
+              </span>
+              <div class="ticker-wrap flex-1 text-xs font-semibold">
+                <div id="member-programs-ticker" class="ticker-track gap-10"></div>
+              </div>
+            </div>
+
+            <div class="p-6 scripture-animate">
+              <h2 id="pastor-msg-title" class="text-xl sm:text-2xl font-black text-[#003B6F] mb-2.5 leading-snug"></h2>
+              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-pink-50 border border-pink-200/80 text-[#D84374] text-xs font-extrabold mb-4 verse-badge-pulse">
+                <i data-lucide="quote" class="w-3.5 h-3.5"></i>
+                <span id="pastor-msg-verse"></span>
+              </div>
+              <p id="pastor-msg-body" class="text-sm text-slate-700 leading-relaxed bg-blue-50/40 p-4 rounded-2xl border border-blue-100"></p>
+
+              <div class="mt-5 pt-4 border-t border-blue-100 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-gradient-to-br from-blue-50 to-white border border-blue-200/80 shadow-sm">
+                  <p class="text-xs font-extrabold text-[#003B6F] flex items-center gap-1.5 mb-2">
+                    <i data-lucide="calendar-days" class="w-4 h-4 text-[#0066B3]"></i>
+                    የሳምንቱ እና ልዩ ፕሮግራሞች (Special Programs)
+                  </p>
+                  <div id="member-special-programs-list" class="space-y-2 text-xs text-slate-700"></div>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-gradient-to-br from-indigo-50/80 to-white border border-indigo-200/80 shadow-sm">
+                  <p class="text-xs font-extrabold text-[#003B6F] flex items-center gap-1.5 mb-2">
+                    <i data-lucide="flame" class="w-4 h-4 text-[#D84374]"></i>
+                    የቤተክርስቲያን የጸሎት ርዕስ እና ማስታወቂያ
+                  </p>
+                  <p id="church-prayer-text" class="text-xs text-slate-700 leading-relaxed mb-2"></p>
+                  <p id="church-announcement-text" class="text-[11px] font-semibold text-[#0066B3] bg-blue-50 p-2 rounded-xl"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Approved Department Messages & Upcoming Events -->
+          <div class="blue-glass-card rounded-3xl p-6 animate-card delay-1">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <div>
+                <h3 class="text-lg font-extrabold text-[#003B6F]">የተፈቀዱልዎ ህብረቶች መልዕክቶች እና ፕሮግራሞች</h3>
+                <p class="text-xs text-slate-500">የህብረቱ መሪ ፈቃድ የሰጠዎት ዘርፎች መልዕክት ብቻ እዚህ ይታያል</p>
+              </div>
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-[#003B6F] text-white">
+                በመሪ ፈቃድ የተጠበቀ
+              </span>
+            </div>
+            <div id="approved-dept-messages" class="space-y-4"></div>
+          </div>
+
+          <!-- Prayer Request & Public Congregational Prayer Wall -->
+          <div class="blue-glass-card rounded-3xl p-6 animate-card delay-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <h3 class="font-extrabold text-[#003B6F] flex items-center gap-2 text-base">
+                <i data-lucide="heart-handshake" class="w-5 h-5 text-[#D84374]"></i>
+                የጸሎት ርዕስ መላኪያ እና የቅዱሳን የጋራ ጸሎት ገጽ (Prayer Wall)
+              </h3>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-pink-50 text-[#D84374] border border-pink-200">
+                አብረን እንጸልይ
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mb-4">
+              የጸሎት ርዕስዎን <strong>ለመጋቢው ብቻ (በሚስጥር)</strong> ወይም <strong>ስምዎ ሳይጠቀስ ለሁሉም ምዕመናን</strong> እንዲታይ እና አብረው እንዲጸልዩልዎ ማጋራት ይችላሉ።
+            </p>
+
+            <form onsubmit="submitPrayerRequest(event)" class="space-y-3 bg-blue-50/60 p-4 rounded-2xl border border-blue-100 mb-5">
+              <input id="prayer-input" type="text" required placeholder="የጸሎት ርዕስዎን እዚህ ይጻፉ..." class="w-full px-4 py-2.5 rounded-xl border border-blue-200 text-xs bg-white" />
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <select id="prayer-visibility" class="px-3 py-2 rounded-xl border border-blue-200 text-xs font-bold bg-white text-[#003B6F]">
+                    <option value="public">ለሁሉም ምዕመናን ገጽ ይጋራ (Public Prayer Wall)</option>
+                    <option value="pastor">ለመጋቢው ብቻ ይላክ (Private to Pastor)</option>
+                  </select>
+                  <label class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-blue-200 text-xs font-semibold text-slate-700 cursor-pointer">
+                    <input id="prayer-anon" type="checkbox" checked class="rounded text-[#0066B3]" />
+                    <span>ስሜ አይጠቀስ</span>
+                  </label>
+                </div>
+                <button type="submit" class="px-5 py-2 rounded-xl bg-[#D84374] text-white text-xs font-extrabold hover:opacity-95 transition">
+                  የጸሎት ርዕስ አጋራ
+                </button>
+              </div>
+            </form>
+
+            <h4 class="text-xs font-extrabold text-[#003B6F] uppercase tracking-wider mb-3 flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#0066B3]"></i>
+              በምዕመናን የተጋሩ የጸሎት ርዕሶች (ተጭነው አብረው ይጸልዩ)
+            </h4>
+            <div id="public-prayer-wall-list" class="space-y-2.5"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PORTAL 3: SENIOR PASTOR PORTAL (#/pastor) ==================== -->
+    <section id="view-pastor" class="hidden space-y-6">
+      <div id="pastor-login-gate" class="max-w-md mx-auto blue-glass-card rounded-3xl overflow-hidden animate-card">
+        <div class="royal-header p-6 text-center text-white">
+          <div class="w-14 h-14 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center mx-auto mb-3">
+            <i data-lucide="mail-check" class="w-7 h-7 text-white"></i>
+          </div>
+          <h2 class="text-xl font-extrabold">የመጋቢው አድሚን መግቢያ</h2>
+          <p class="text-xs text-blue-200 mt-1">በሲስተሙ የተፈቀደለት የመጋቢ ኢሜይል ብቻ መግባት ይችላል።</p>
+        </div>
+        <form onsubmit="authenticateAdminRole(event, 'pastor')" class="p-6 space-y-3.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">የተፈቀደ ኢሜይል (Authorized Email)</label>
+            <input id="pastor-login-email" type="email" required placeholder="teshaletayealemu@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">የይለፍ ቃል (Password)</label>
+            <input id="pastor-login-pass" type="password" required value="admin123" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/40" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+            <button type="button" onclick="sendAdminVerificationEmail('pastor')" class="py-3 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#003B6F] border border-amber-300 text-xs font-extrabold transition flex items-center justify-center gap-1.5">
+              <i data-lucide="send" class="w-3.5 h-3.5 text-[#D84374]"></i> ኢሜይል አረጋግጥ (Verify)
+            </button>
+            <button type="submit" class="py-3 px-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
+              ወደ መጋቢው ዳሽቦርድ ግባ →
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500 text-center">ኢሜይልዎን ለማረጋገጥ መጀመሪያ <strong>“ኢሜይል አረጋግጥ”</strong> ይጫኑ፣ በኢሜይልዎ የመጣውን ሊንክ ይክፈቱ፣ ከዚያ ይግቡ።</p>
+        </form>
+      </div>
+
+      <div id="pastor-dashboard-content" class="hidden space-y-6">
+        <div class="blue-glass-card rounded-2xl px-5 py-3 flex flex-wrap items-center justify-between gap-3 border-l-4 border-l-[#0066B3]">
+          <p class="text-xs font-bold text-[#003B6F]">
+            የመጋቢ ኢሜይል: <span id="active-pastor-email" class="font-mono font-extrabold text-[#0066B3]"></span>
+          </p>
+          <button onclick="logoutAdminRole('pastor')" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white text-xs font-bold transition">
+            ውጣ (Logout)
+          </button>
+        </div>
+
+        <!-- LIVE REAL-DATA KPI CARDS (CLICKABLE TO OPEN FULL DIRECTORY & MISSING MEMBERS DRAWERS) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 animate-card">
+          <!-- Clickable Total Registered Members Card -->
+          <div onclick="openMembersDirectoryModal()" class="royal-card-dark rounded-3xl p-5 cursor-pointer hover:scale-[1.02] transition group" title="የሁሉንም አባላት ዝርዝር ለመመልከት እና መልዕክት ለመላክ ይንኩ">
+            <div class="flex items-center justify-between text-blue-200 mb-2">
+              <span class="text-xs font-bold">የተመዘገቡ አባላት (Real Data)</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/15 text-white group-hover:bg-white group-hover:text-[#003B6F] transition">ዝርዝር ክፈት ↗</span>
+            </div>
+            <p id="kpi-real-members" class="text-2xl sm:text-3xl font-black tracking-tight">0 አባላት</p>
+            <p class="text-[11px] text-blue-200 mt-1">ሲነኩ የሁሉንም ዝርዝር እና ቀጥታ መልዕክት ይከፍታል</p>
+          </div>
+
+          <!-- Active Ministries -->
+          <div class="blue-glass-card rounded-3xl p-5 border-b-4 border-b-[#0066B3]">
+            <div class="flex items-center justify-between text-slate-500 mb-2">
+              <span class="text-xs font-bold">የቤተክርስቲያን ህብረቶች</span>
+              <i data-lucide="layers" class="w-4 h-4 text-[#0066B3]"></i>
+            </div>
+            <p id="kpi-real-depts" class="text-2xl sm:text-3xl font-black text-[#003B6F]">4 ዘርፎች</p>
+            <p class="text-[11px] text-emerald-600 font-bold mt-1">በመሪ ፈቃድ የተደራጁ</p>
+          </div>
+
+          <!-- Clickable Missing / 3+ Absences Card -->
+          <div onclick="openMissingMembersModal()" class="blue-glass-card rounded-3xl p-5 border-b-4 border-b-[#D84374] cursor-pointer hover:scale-[1.02] transition group" title="ከ3 ጊዜ በላይ የቀሩ አባላትን ዝርዝር ለማየት ይንኩ">
+            <div class="flex items-center justify-between text-slate-500 mb-2">
+              <span class="text-xs font-bold text-[#D84374]">የጠፉ አባላት (3+ ቀሪ)</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-pink-100 text-[#D84374] group-hover:bg-[#D84374] group-hover:text-white transition">ዝርዝር እይ ↗</span>
+            </div>
+            <p id="kpi-missing-members" class="text-2xl sm:text-3xl font-black text-[#D84374]">0 አባላት</p>
+            <p class="text-[11px] text-slate-500 mt-1">ከሁሉም ዘርፎች 3+ ጊዜ የቀሩ</p>
+          </div>
+
+          <!-- Real Prayer Requests Count -->
+          <div class="blue-glass-card rounded-3xl p-5 border-b-4 border-b-emerald-500">
+            <div class="flex items-center justify-between text-slate-500 mb-2">
+              <span class="text-xs font-bold">የተላኩ የጸሎት ርዕሶች</span>
+              <i data-lucide="heart-handshake" class="w-4 h-4 text-emerald-600"></i>
+            </div>
+            <p id="kpi-real-prayers" class="text-2xl sm:text-3xl font-black text-[#003B6F]">0 ርዕሶች</p>
+            <p id="kpi-prayed-sub" class="text-[11px] text-emerald-600 font-bold mt-1">0 ተጸልዮባቸዋል</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Pastor Daily Word & Programs Publisher -->
+            <div class="blue-glass-card rounded-3xl p-6 animate-card delay-1">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-extrabold text-[#003B6F] flex items-center gap-2">
+                  <i data-lucide="pen-tool" class="w-5 h-5 text-[#0066B3]"></i>
+                  የዕለት መልዕክት፣ የጸሎት ርዕሶች እና ልዩ ፕሮግራሞች መመዝገቢያ
+                </h2>
+                <span class="text-xs font-bold text-white bg-[#003B6F] px-3 py-1 rounded-full">የመጋቢው ዳሽቦርድ</span>
+              </div>
+
+              <form onsubmit="publishPastorMessage(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">የመልዕክቱ ርዕስ</label>
+                    <input id="input-pastor-title" type="text" required class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/30" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">የመጽሐፍ ቅዱስ ጥቅስ</label>
+                    <input id="input-pastor-verse" type="text" required class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/30" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">የዕለቱ ቃል መልዕክት</label>
+                  <textarea id="input-pastor-body" rows="3" required class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs leading-relaxed bg-blue-50/30"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">የሳምንቱ ፕሮግራሞች (Weekly Schedule)</label>
+                    <input id="input-weekly-prog" type="text" class="w-full px-3.5 py-2 rounded-xl border border-blue-200 text-xs bg-blue-50/30" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">ልዩ ፕሮግራሞች (Special Programs)</label>
+                    <input id="input-special-prog" type="text" class="w-full px-3.5 py-2 rounded-xl border border-blue-200 text-xs bg-blue-50/30" />
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">አጠቃላይ የቤተክርስቲያን ማስታወቂያ</label>
+                    <input id="input-church-ann" type="text" class="w-full px-3.5 py-2 rounded-xl border border-blue-200 text-xs bg-blue-50/30" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">የሳምንቱ የጸሎት ርዕስ</label>
+                    <input id="input-church-prayer" type="text" class="w-full px-3.5 py-2 rounded-xl border border-blue-200 text-xs bg-blue-50/30" />
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+                  <button type="button" onclick="openPrintableSheet()" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#003B6F] border border-blue-200 text-xs font-bold transition">
+                    <i data-lucide="printer" class="w-4 h-4 text-[#0066B3]"></i>
+                    ስማርት ስልክ ለሌላቸው አትም (Print Sheet)
+                  </button>
+                  <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
+                    ለሁሉም ምዕመናን አጋራ
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Pastor-Controlled Department Leader Emails & Codes -->
+            <div class="blue-glass-card rounded-3xl p-6 animate-card delay-2">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div>
+                  <h3 class="text-lg font-extrabold text-[#003B6F] flex items-center gap-2">
+                    <i data-lucide="key-round" class="w-5 h-5 text-[#D84374]"></i>
+                    የህብረት መሪዎች የተፈቀደ ኢሜይል እና መለያ ኮድ ቁጥጥር
+                  </h3>
+                  <p class="text-xs text-slate-500">እያንዳንዱ የህብረት መሪ የሚገባበትን የተፈቀደ ኢሜይል እና ኮድ መጋቢው እዚህ ይቀይራል / ይሾማል</p>
+                </div>
+                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-pink-50 text-[#D84374] border border-pink-200">Super Admin Control</span>
+              </div>
+
+              <div id="pastor-leader-codes-table" class="space-y-3"></div>
+            </div>
+          </div>
+
+          <!-- Right Column: Real Prayer Requests & Quick Member Registry Shortcut -->
+          <div class="space-y-6">
+            <div class="blue-glass-card rounded-3xl p-5 animate-card delay-1">
+              <h3 class="font-extrabold text-[#003B6F] flex items-center gap-2 mb-3">
+                <i data-lucide="heart" class="w-4 h-4 text-[#D84374]"></i>
+                የመጡ የጸሎት ርዕሶች (Real-Time)
+              </h3>
+              <div id="pastor-prayer-list" class="space-y-2.5"></div>
+            </div>
+
+            <div class="blue-glass-card rounded-3xl p-5 animate-card delay-2">
+              <h3 class="font-extrabold text-[#003B6F] flex items-center gap-2 mb-2">
+                <i data-lucide="users" class="w-4 h-4 text-[#0066B3]"></i>
+                የአባላት መዝገብ እና ቀጥታ መልዕክት
+              </h3>
+              <p class="text-xs text-slate-500 mb-3">በስልክ የተመዘገቡትን እና በጽህፈት ቤት (Offline) የተመዘገቡትን አባላት በስም፣ በስልክ፣ በሰፈርና በዘርፍ ፈልገው ቀጥታ መልዕክት ይላኩ።</p>
+              <button onclick="openMembersDirectoryModal()" class="w-full py-2.5 rounded-xl bg-[#003B6F] hover:bg-[#002347] text-white text-xs font-extrabold transition flex items-center justify-center gap-2">
+                <i data-lucide="search" class="w-4 h-4"></i>
+                የአባላት ዝርዝር እና መልዕክት መላኪያ ክፈት
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PORTAL 4: DEPARTMENT LEADER PORTAL (#/leader) WITH EVENT ATTENDANCE & 3+ ABSENCES ==================== -->
+    <section id="view-leader" class="hidden">
+      <div id="leader-login-gate" class="max-w-md mx-auto blue-glass-card rounded-3xl overflow-hidden animate-card">
+        <div class="royal-header p-6 text-center text-white">
+          <div class="w-14 h-14 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center mx-auto mb-3">
+            <i data-lucide="shield-check" class="w-7 h-7 text-white"></i>
+          </div>
+          <h2 class="text-xl font-extrabold">የህብረት መሪዎች መግቢያ</h2>
+          <p class="text-xs text-blue-200 mt-1">
+            በመጋቢው የተፈቀደለትን <strong>ኢሜይል</strong> እና <strong>የመለያ ኮድ (PIN)</strong> ያስገቡ።
+          </p>
+        </div>
+
+        <form onsubmit="authenticateLeader(event)" class="p-6 space-y-3.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">የሚያስተዳድሩትን ህብረት ይምረጡ</label>
+            <select id="login-dept-select" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-bold bg-blue-50/40"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">የተፈቀደ ኢሜይል (Authorized Leader Email)</label>
+            <input id="login-leader-email" type="email" required placeholder="choir@bolefgbc.org" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">በመጋቢው የተሰጠ ልዩ ኮድ (Access Code)</label>
+            <input id="login-leader-code" type="text" required placeholder="የመለያ ኮድዎን ያስገቡ" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-mono uppercase bg-blue-50/40" />
+          </div>
+
+          <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
+            ወደ ህብረቴ አድሚን ግባ →
+          </button>
+        </form>
+      </div>
+
+      <div id="leader-dashboard-content" class="hidden space-y-6">
+        <div class="royal-card-dark rounded-3xl p-5 flex flex-wrap items-center justify-between gap-4 animate-card">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-blue-200">የተገደበ የመሪ ዳሽቦርድ (Isolated Access)</span>
+            <h2 id="active-leader-dept-title" class="text-xl font-extrabold text-white"></h2>
+            <p id="active-leader-name" class="text-xs text-blue-200"></p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- Button to open 3+ Absences Missing Members Drawer -->
+            <button onclick="openMissingMembersModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#D84374] hover:opacity-95 text-white text-xs font-extrabold shadow transition">
+              <i data-lucide="user-x" class="w-4 h-4"></i>
+              <span>የጠፉ አባላት (3+ ቀሪ)</span>
+              <span id="leader-missing-badge" class="px-1.5 py-0.2 rounded-full bg-white text-[#D84374] text-[10px] font-black">0</span>
+            </button>
+            <button onclick="logoutLeader()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/15 hover:bg-rose-600 text-white text-xs font-bold transition">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+              ውጣ
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Left: Approval Queue + Event Attendance Sheet -->
+          <div class="space-y-6">
+            <div class="blue-glass-card rounded-3xl p-5 animate-card delay-1">
+              <h3 class="font-extrabold text-[#003B6F] flex items-center gap-2 mb-1">
+                <i data-lucide="user-check" class="w-4 h-4 text-[#D84374]"></i>
+                የመቀላቀል ፈቃድ ጥያቄዎች
+              </h3>
+              <p class="text-xs text-slate-500 mb-4">እስኪፈቅዱ ድረስ አባሉ የህብረቱን መልዕክት ማየት አይችልም።</p>
+              <div id="leader-approval-queue" class="space-y-3"></div>
+            </div>
+
+            <!-- Event Attendance Recorder -->
+            <div class="blue-glass-card rounded-3xl p-5 animate-card delay-2">
+              <h3 class="font-extrabold text-[#003B6F] flex items-center gap-2 mb-1">
+                <i data-lucide="clipboard-check" class="w-4 h-4 text-[#0066B3]"></i>
+                የፕሮግራም መገኘት መመዝገቢያ (Attendance)
+              </h3>
+              <p class="text-xs text-slate-500 mb-3">በህብረቱ ፕሮግራም ላይ የተገኙትንና ያልተገኙትን (Absent) እዚህ ይመዝግቡ፤ ከ3 ጊዜ በላይ የቀሩ አባላት በቀጥታ ለመጋቢው እና ለህብረቱ ይታያሉ።</p>
+
+              <div class="space-y-2.5 mb-3">
+                <input id="att-event-name" type="text" placeholder="የፕሮግራሙ ስም (ለምሳሌ የሐሙስ ልምምድ)" class="w-full px-3 py-2 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40" />
+                <input id="att-event-date" type="date" class="w-full px-3 py-2 rounded-xl border border-blue-200 text-xs bg-blue-50/40" />
+              </div>
+
+              <div id="leader-attendance-members-list" class="space-y-2 max-h-64 overflow-y-auto mb-3"></div>
+
+              <button onclick="saveEventAttendance()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow hover:opacity-95 transition">
+                መገኘት (Attendance) አስቀምጥ ✓
+              </button>
+            </div>
+          </div>
+
+          <!-- Right 2 Cols: Send Message / Event & Sent History -->
+          <div class="lg:col-span-2 blue-glass-card rounded-3xl p-6 animate-card delay-2">
+            <h3 class="font-extrabold text-[#003B6F] flex items-center gap-2 mb-3">
+              <i data-lucide="send" class="w-4 h-4 text-[#0066B3]"></i>
+              ለህብረቱ አባላት ብቻ መልዕክት / የፕሮግራም ሰዓት መላኪያ
+            </h3>
+            <form onsubmit="sendDepartmentMessage(event)" class="space-y-3 mb-6">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input id="dept-msg-title" type="text" required placeholder="የመልዕክቱ / የፕሮግራሙ ርዕስ" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/30" />
+                <input id="dept-msg-event-time" type="text" placeholder="ቀን እና ሰዓት (ለምሳሌ ሐሙስ 11:30)" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/30" />
+              </div>
+              <textarea id="dept-msg-body" rows="2" required placeholder="ለተፈቀደላቸው የዚህ ህብረት አባላት ብቻ የሚታይ መልዕክት ይጻፉ..." class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/30"></textarea>
+              <button type="submit" class="px-5 py-2.5 rounded-xl bg-[#0066B3] text-white text-xs font-extrabold hover:bg-[#003B6F] transition">
+                ለህብረቱ አባላት ላክ
+              </button>
+            </form>
+
+            <h4 class="text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-3">ቀድሞ የተላኩ የህብረቱ መልዕክቶች እና ፕሮግራሞች</h4>
+            <div id="leader-sent-messages" class="space-y-3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PORTAL 5: FINANCE ADMIN PORTAL (#/finance) ==================== -->
+    <section id="view-finance" class="hidden space-y-6">
+      <div id="finance-login-gate" class="max-w-md mx-auto blue-glass-card rounded-3xl overflow-hidden animate-card">
+        <div class="royal-header p-6 text-center text-white">
+          <div class="w-14 h-14 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center mx-auto mb-3">
+            <i data-lucide="wallet" class="w-7 h-7 text-white"></i>
+          </div>
+          <h2 class="text-xl font-extrabold">የፋይናንስ አድሚን መግቢያ</h2>
+          <p class="text-xs text-blue-200 mt-1">በሲስተሙ የተፈቀደለት የፋይናንስ ክፍል ኢሜይል ብቻ መግባት ይችላል።</p>
+        </div>
+        <form onsubmit="authenticateAdminRole(event, 'finance')" class="p-6 space-y-3.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">የተፈቀደ ኢሜይል (Authorized Finance Email)</label>
+            <input id="finance-login-email" type="email" required placeholder="teshaletayealemu@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">የይለፍ ቃል (Password)</label>
+            <input id="finance-login-pass" type="password" required value="finance123" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/40" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+            <button type="button" onclick="sendAdminVerificationEmail('finance')" class="py-3 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#003B6F] border border-amber-300 text-xs font-extrabold transition flex items-center justify-center gap-1.5">
+              <i data-lucide="send" class="w-3.5 h-3.5 text-[#D84374]"></i> ኢሜይል አረጋግጥ (Verify)
+            </button>
+            <button type="submit" class="py-3 px-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
+              ወደ ፋይናንስ ዳሽቦርድ ግባ →
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500 text-center">በFirebase የተረጋገጠ (Email Verified) አድሚን ኢሜይል ብቻ ይገባል።</p>
+        </form>
+      </div>
+
+      <div id="finance-dashboard-content" class="hidden space-y-6">
+        <div class="blue-glass-card rounded-2xl px-5 py-3 flex flex-wrap items-center justify-between gap-3 border-l-4 border-l-[#0066B3]">
+          <p class="text-xs font-bold text-[#003B6F]">
+            የፋይናንስ ኢሜይል: <span id="active-finance-email" class="font-mono font-extrabold text-[#0066B3]"></span>
+          </p>
+          <button onclick="logoutAdminRole('finance')" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white text-xs font-bold transition">
+            ውጣ (Logout)
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 animate-card">
+          <div class="royal-card-dark rounded-3xl p-5">
+            <p class="text-xs font-bold text-blue-200">የተረጋገጠ ወርሃዊ አስራት እና መባ</p>
+            <p id="finance-total-verified" class="text-2xl sm:text-3xl font-black text-white mt-1">0 ብር</p>
+            <span class="text-[11px] font-semibold text-emerald-300">በቀጥታ ከFirebase የተሰላ</span>
+          </div>
+          <div class="blue-glass-card rounded-3xl p-5 border-b-4 border-b-amber-500">
+            <p class="text-xs font-bold text-slate-500">ማረጋገጫ የሚጠብቁ ደረሰኞች</p>
+            <p id="finance-pending-count" class="text-2xl sm:text-3xl font-black text-amber-600 mt-1">0 ደረሰኝ</p>
+            <span class="text-[11px] font-semibold text-slate-400">በባንክ Reference የሚጣራ</span>
+          </div>
+          <div class="blue-glass-card rounded-3xl p-5 border-b-4 border-b-[#D84374]">
+            <p class="text-xs font-bold text-slate-500">የታገዱ የተደገሙ ቁጥሮች (Fraud Blocked)</p>
+            <p id="finance-blocked-count" class="text-2xl sm:text-3xl font-black text-[#D84374] mt-1">0 ሙከራ</p>
+            <span class="text-[11px] font-semibold text-slate-400">Auto-Duplicate Shield ንቁ ነው</span>
+          </div>
+        </div>
+
+        <div class="blue-glass-card rounded-3xl overflow-hidden animate-card delay-1">
+          <div class="bg-[#003B6F] text-white px-6 py-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-extrabold">የአስራት እና መባ ደረሰኞች ማረጋገጫ (Verification Ledger)</h2>
+              <p class="text-xs text-blue-200">እያንዳንዱ ክፍያ ልዩ Transaction Reference Number ስላለው የተደገመ ደረሰኝ አይገባም</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <div class="relative">
+                <i data-lucide="search" class="w-3.5 h-3.5 text-blue-300 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input id="finance-search" oninput="renderAll()" type="text" placeholder="በስም ወይም በFT ቁጥር ፈልግ..." class="pl-8 pr-3 py-1.5 rounded-xl bg-white/15 border border-white/20 text-xs text-white placeholder-blue-200 focus:outline-none" />
+              </div>
+              <div class="flex bg-blue-950/60 p-1 rounded-xl border border-white/15 text-xs font-bold">
+                <button onclick="setFinanceFilter('all')" id="fin-filter-all" class="px-2.5 py-1 rounded-lg bg-[#0066B3] text-white transition">ሁሉም</button>
+                <button onclick="setFinanceFilter('pending')" id="fin-filter-pending" class="px-2.5 py-1 rounded-lg text-blue-200 hover:text-white transition">የሚጠብቁ</button>
+                <button onclick="setFinanceFilter('verified')" id="fin-filter-verified" class="px-2.5 py-1 rounded-lg text-blue-200 hover:text-white transition">የተረጋገጡ</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6">
+            <div id="finance-ledger-list" class="space-y-3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PORTAL 6: DEDICATED MEMBERSHIP & OFFLINE REGISTRATION ADMIN (#/membership-admin) ==================== -->
+    <section id="view-membership-admin" class="hidden space-y-6">
+      <div id="membership-login-gate" class="max-w-md mx-auto blue-glass-card rounded-3xl overflow-hidden animate-card">
+        <div class="royal-header p-6 text-center text-white">
+          <div class="w-14 h-14 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center mx-auto mb-3">
+            <i data-lucide="clipboard-list" class="w-7 h-7 text-white"></i>
+          </div>
+          <h2 class="text-xl font-extrabold">የአባላት መዝገብ እና ጽህፈት ቤት አድሚን</h2>
+          <p class="text-xs text-blue-200 mt-1">ስማርት ስልክ የሌላቸውን አባላት ለመመዝገብ እና ሁሉንም አባላት ለመፈለግ በተፈቀደ ኢሜይል ይግቡ።</p>
+        </div>
+        <form onsubmit="authenticateAdminRole(event, 'membership')" class="p-6 space-y-3.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">የተፈቀደ ኢሜይል (Authorized Email)</label>
+            <input id="membership-login-email" type="email" required placeholder="teshaletayealemu@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">የይለፍ ቃል (Password)</label>
+            <input id="membership-login-pass" type="password" required value="memberadmin123" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/40" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+            <button type="button" onclick="sendAdminVerificationEmail('membership')" class="py-3 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#003B6F] border border-amber-300 text-xs font-extrabold transition flex items-center justify-center gap-1.5">
+              <i data-lucide="send" class="w-3.5 h-3.5 text-[#D84374]"></i> ኢሜይል አረጋግጥ (Verify)
+            </button>
+            <button type="submit" class="py-3 px-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
+              ወደ አባላት መዝገብ አድሚን ግባ →
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500 text-center">በFirebase የማረጋገጫ ሊንክ የተረጋገጠ ኢሜይል ይጠይቃል።</p>
+        </form>
+      </div>
+
+      <div id="membership-dashboard-content" class="hidden space-y-6">
+        <div class="blue-glass-card rounded-2xl px-5 py-3 flex flex-wrap items-center justify-between gap-3 border-l-4 border-l-[#0066B3]">
+          <p class="text-xs font-bold text-[#003B6F]">
+            የአባላት መዝገብ አድሚን: <span id="active-membership-email" class="font-mono font-extrabold text-[#0066B3]"></span>
+          </p>
+          <button onclick="logoutAdminRole('membership')" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white text-xs font-bold transition">
+            ውጣ (Logout)
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <!-- Left 4 Cols: Register Non-Smartphone / Walk-in Members -->
+          <div class="lg:col-span-4 blue-glass-card rounded-3xl p-6 animate-card">
+            <h3 class="text-base font-extrabold text-[#003B6F] flex items-center gap-2 mb-1">
+              <i data-lucide="user-plus" class="w-5 h-5 text-[#D84374]"></i>
+              ስማርት ስልክ የሌላቸው አባላት መመዝገቢያ
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">በጽህፈት ቤት በኩል የሚመዘገቡ አባላትን ሙሉ መረጃ እዚህ ያስገቡ።</p>
+
+            <form onsubmit="registerOfflineMemberFull(event)" class="space-y-3">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">ሙሉ ስም <span class="text-[#D84374]">*</span></label>
+                <input id="off-reg-name" type="text" required placeholder="ለምሳሌ አቶ ከበደ ሞላ" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">ስልክ ቁጥር <span class="text-[#D84374]">*</span></label>
+                <input id="off-reg-phone" type="tel" required placeholder="0911..." class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">መኖሪያ ሰፈር / ክፍለ ከተማ <span class="text-[#D84374]">*</span></label>
+                <input id="off-reg-address" type="text" required placeholder="ለምሳሌ ቦሌ ቡልቡላ / ገርጂ" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/40" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">የሚያገለግሉበት / የታቀፉበት ዘርፍ</label>
+                <select id="off-reg-dept" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs font-semibold bg-blue-50/40">
+                  <option value="">አጠቃላይ ምዕመን (ዘርፍ ያልመረጡ)</option>
+                  <option value="choir">የመዘምራን አገልግሎት</option>
+                  <option value="youth">የወጣቶች ህብረት</option>
+                  <option value="deacons">የዲያቆናት ህብረት</option>
+                  <option value="children">የህፃናት አገልግሎት</option>
+                </select>
+              </div>
+              <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow hover:opacity-95 transition">
+                በመዝገብ ላይ አስቀምጥ ✓
+              </button>
+            </form>
+          </div>
+
+          <!-- Right 8 Cols: Searchable All-Members Directory (By Name, Phone, Neighborhood, Ministry) -->
+          <div class="lg:col-span-8 blue-glass-card rounded-3xl overflow-hidden animate-card delay-1">
+            <div class="bg-[#003B6F] text-white p-5">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div>
+                  <h3 class="text-lg font-extrabold">የሁሉም የቦሌ አጥብያ አባላት ዝርዝር (Online & Offline)</h3>
+                  <p class="text-xs text-blue-200">በስም፣ በስልክ ቁጥር፣ በመኖሪያ ሰፈር እና በሚያገለግሉበት ዘርፍ ይፈልጉ</p>
+                </div>
+                <span id="membership-admin-total-badge" class="px-3 py-1 rounded-full text-xs font-extrabold bg-white/15 border border-white/25">0 አባላት</span>
+              </div>
+
+              <!-- Multi-Field Search & Ministry Filter -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div class="sm:col-span-2 relative">
+                  <i data-lucide="search" class="w-4 h-4 text-blue-300 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                  <input id="mem-admin-search" oninput="renderAll()" type="text" placeholder="በስም፣ በስልክ ቁጥር ወይም በሰፈር ይፈልጉ..." class="w-full pl-9 pr-3 py-2 rounded-xl bg-white/15 border border-white/25 text-xs text-white placeholder-blue-200 focus:outline-none" />
+                </div>
+                <select id="mem-admin-dept-filter" onchange="renderAll()" class="px-3 py-2 rounded-xl bg-[#002347] border border-white/25 text-xs font-bold text-white">
+                  <option value="all">ሁሉም ዘርፎች (All Ministries)</option>
+                  <option value="choir">የመዘምራን አገልግሎት</option>
+                  <option value="youth">የወጣቶች ህብረት</option>
+                  <option value="deacons">የዲያቆናት ህብረት</option>
+                  <option value="children">የህፃናት አገልግሎት</option>
+                  <option value="none">ዘርፍ ያልመረጡ</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="membership-admin-list" class="p-5 space-y-2.5 max-h-[34rem] overflow-y-auto"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== OPTIONAL ALL-ADMIN DIRECTORY (#/all-admin) ==================== -->
+    <section id="view-all-admin" class="hidden max-w-4xl mx-auto space-y-6">
+      <div class="royal-card-dark rounded-3xl p-6 sm:p-8 animate-card">
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-white/15 text-blue-100">System Owner / All-Admin Directory</span>
+        <h2 class="text-2xl font-extrabold mt-3">የቦሌ አጥብያ የየክፍሉ ቀጥታ መግቢያ ሊንኮች እና የተፈቀዱ ኢሜይሎች</h2>
+        <p class="text-xs text-blue-200 mt-1">የመጋቢውን፣ የፋይናንስ እና የአባላት መዝገብ አድሚን የተፈቀዱ ኢሜይሎችን እዚህ ማስተካከል ይችላሉ።</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
+          <div class="p-3.5 rounded-2xl bg-white text-slate-900 space-y-1.5">
+            <label class="block text-[10px] font-extrabold text-[#003B6F]">የመጋቢው ኢሜይል (Pastor)</label>
+            <input id="cfg-pastor-email" type="email" class="w-full px-3 py-1.5 rounded-xl border border-blue-200 text-xs font-mono" />
+          </div>
+          <div class="p-3.5 rounded-2xl bg-white text-slate-900 space-y-1.5">
+            <label class="block text-[10px] font-extrabold text-[#003B6F]">የፋይናንስ ኢሜይል (Finance)</label>
+            <input id="cfg-finance-email" type="email" class="w-full px-3 py-1.5 rounded-xl border border-blue-200 text-xs font-mono" />
+          </div>
+          <div class="p-3.5 rounded-2xl bg-white text-slate-900 space-y-1.5">
+            <label class="block text-[10px] font-extrabold text-[#003B6F]">የአባላት መዝገብ አድሚን ኢሜይል</label>
+            <input id="cfg-membership-email" type="email" class="w-full px-3 py-1.5 rounded-xl border border-blue-200 text-xs font-mono" />
+          </div>
+        </div>
+        <button onclick="saveAuthorizedAdminEmails()" class="mt-3 px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-xs font-extrabold transition">
+          የተፈቀዱ ኢሜይሎችን አስቀምጥ ✓
+        </button>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+          <div class="p-4 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-between">
+            <div>
+              <p class="text-sm font-extrabold">1. የምዕመናን ገጽ (Public Link)</p>
+              <p class="text-[11px] text-blue-200 font-mono">#/member</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="copyPortalLink('#/member', 'የምዕመናን ሊንክ')" class="px-3 py-1.5 rounded-xl bg-white text-[#003B6F] text-xs font-bold">ኮፒ</button>
+              <a href="#/member" onclick="navigateTo('member'); return false;" class="px-3 py-1.5 rounded-xl bg-[#0066B3] text-white text-xs font-bold">ክፈት</a>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-between">
+            <div>
+              <p class="text-sm font-extrabold">2. የመጋቢው አድሚን (Pastor Only)</p>
+              <p class="text-[11px] text-blue-200 font-mono">#/pastor</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="copyPortalLink('#/pastor', 'የመጋቢው ሊንክ')" class="px-3 py-1.5 rounded-xl bg-white text-[#003B6F] text-xs font-bold">ኮፒ</button>
+              <a href="#/pastor" onclick="navigateTo('pastor'); return false;" class="px-3 py-1.5 rounded-xl bg-[#0066B3] text-white text-xs font-bold">ክፈት</a>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-between">
+            <div>
+              <p class="text-sm font-extrabold">3. የህብረት መሪዎች (Leaders Only)</p>
+              <p class="text-[11px] text-blue-200 font-mono">#/leader</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="copyPortalLink('#/leader', 'የህብረት መሪዎች ሊንክ')" class="px-3 py-1.5 rounded-xl bg-white text-[#003B6F] text-xs font-bold">ኮፒ</button>
+              <a href="#/leader" onclick="navigateTo('leader'); return false;" class="px-3 py-1.5 rounded-xl bg-[#D84374] text-white text-xs font-bold">ክፈት</a>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-between">
+            <div>
+              <p class="text-sm font-extrabold">4. የፋይናንስ አድሚን (Finance Only)</p>
+              <p class="text-[11px] text-blue-200 font-mono">#/finance</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="copyPortalLink('#/finance', 'የፋይናንስ ሊንክ')" class="px-3 py-1.5 rounded-xl bg-white text-[#003B6F] text-xs font-bold">ኮፒ</button>
+              <a href="#/finance" onclick="navigateTo('finance'); return false;" class="px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 text-xs font-bold">ክፈት</a>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2 p-4 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-between">
+            <div>
+              <p class="text-sm font-extrabold">5. የአባላት መዝገብ እና ጽህፈት ቤት አድሚን (Offline & All Members)</p>
+              <p class="text-[11px] text-blue-200 font-mono">#/membership-admin</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="copyPortalLink('#/membership-admin', 'የአባላት መዝገብ አድሚን ሊንክ')" class="px-3 py-1.5 rounded-xl bg-white text-[#003B6F] text-xs font-bold">ኮፒ</button>
+              <a href="#/membership-admin" onclick="navigateTo('membership-admin'); return false;" class="px-3 py-1.5 rounded-xl bg-emerald-500 text-slate-950 text-xs font-bold">ክፈት</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= 4. PASTOR CLICKABLE ALL-MEMBERS & DIRECT MESSAGING DRAWER MODAL ================= -->
+  <div id="pastor-members-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4" onclick="if(event.target===this) closeMembersDirectoryModal()">
+    <div class="modal-pop bg-white rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl border border-blue-200 max-h-[90vh] flex flex-col">
+      <div class="royal-header p-5 text-white flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-extrabold">የሁሉም የቦሌ አጥብያ አባላት ዝርዝር እና ቀጥታ መልዕክት መላኪያ</h3>
+          <p class="text-xs text-blue-200">በስም፣ በስልክ ቁጥር፣ በሰፈር እና በሚያገለግሉበት ዘርፍ ፈልገው በቀጥታ መልዕክት ይላኩ</p>
+        </div>
+        <button onclick="closeMembersDirectoryModal()" class="p-2 rounded-xl bg-white/15 hover:bg-white/25 text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-5 bg-blue-50/70 border-b border-blue-100 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="sm:col-span-2 relative">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input id="pastor-dir-search" oninput="renderPastorMembersModalList()" type="text" placeholder="በስም፣ በስልክ ቁጥር ወይም በሰፈር ይፈልጉ..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-blue-200 text-xs bg-white" />
+        </div>
+        <select id="pastor-dir-dept" onchange="renderPastorMembersModalList()" class="px-3 py-2.5 rounded-xl border border-blue-200 text-xs font-bold bg-white text-[#003B6F]">
+          <option value="all">ሁሉም ዘርፎች</option>
+          <option value="choir">የመዘምራን አገልግሎት</option>
+          <option value="youth">የወጣቶች ህብረት</option>
+          <option value="deacons">የዲያቆናት ህብረት</option>
+          <option value="children">የህፃናት አገልግሎት</option>
+        </select>
+      </div>
+
+      <!-- Direct Message Composer Box (Appears when Pastor clicks "መልዕክት ላክ" on a member) -->
+      <div id="pastor-dm-composer" class="hidden p-4 bg-pink-50 border-b border-pink-200">
+        <form onsubmit="sendDirectMessageToMember(event)" class="flex flex-col sm:flex-row items-center gap-2">
+          <span id="dm-target-label" class="text-xs font-extrabold text-[#D84374] shrink-0"></span>
+          <input id="dm-message-input" type="text" required placeholder="ለዚህ አባል በቀጥታ የሚደርስ የእረኝነት መልዕክት ይጻፉ..." class="flex-1 w-full px-3.5 py-2 rounded-xl border border-pink-200 text-xs bg-white" />
+          <div class="flex gap-1.5 shrink-0">
+            <button type="submit" class="px-4 py-2 rounded-xl bg-[#D84374] text-white text-xs font-extrabold">ላክ</button>
+            <button type="button" onclick="document.getElementById('pastor-dm-composer').classList.add('hidden')" class="px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600">ዝጋ</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="pastor-dir-list" class="p-5 overflow-y-auto space-y-2.5 flex-1"></div>
+    </div>
+  </div>
+
+  <!-- ================= 5. CLICKABLE 3+ ABSENCES (MISSING MEMBERS) MODERN DRAWER MODAL ================= -->
+  <div id="missing-members-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4" onclick="if(event.target===this) closeMissingMembersModal()">
+    <div class="modal-pop bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-pink-200 max-h-[85vh] flex flex-col">
+      <div class="bg-gradient-to-r from-[#881337] to-[#D84374] p-5 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-white/15 flex items-center justify-center">
+            <i data-lucide="user-x" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-extrabold">ከ3 ጊዜ በላይ የቀሩ (የጠፉ አባላት) ክትትል</h3>
+            <p class="text-xs text-pink-100">ከሁሉም የቤተክርስቲያን ዘርፎች 3 እና ከዚያ በላይ ፕሮግራሞች የቀሩ አባላት ዝርዝር</p>
+          </div>
+        </div>
+        <button onclick="closeMissingMembersModal()" class="p-2 rounded-xl bg-white/15 hover:bg-white/25 text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div id="missing-members-modal-list" class="p-5 overflow-y-auto space-y-3 flex-1"></div>
+    </div>
+  </div>
+
+  <!-- ================= 6. DIGITAL MEMBER BADGE MODAL (REAL QR + PHOTO + PRINT + DOWNLOAD) ================= -->
+  <div id="member-badge-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4" onclick="if(event.target===this) closeMemberBadgeModal()">
+    <div id="badge-printable-area" class="modal-pop max-w-sm w-full rounded-3xl overflow-hidden shadow-2xl border border-blue-300/30 bg-white">
+      <div class="royal-header p-5 text-center text-white relative">
+        <button onclick="closeMemberBadgeModal()" class="no-print absolute top-4 right-4 p-1.5 rounded-full bg-white/15 hover:bg-white/25 text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+        <div class="w-12 h-12 rounded-full bg-white mx-auto flex items-center justify-center shadow-lg border-2 border-blue-200 mb-2">
+          <span class="text-xs font-black text-[#0066B3]">FGBC</span>
+        </div>
+        <p class="text-[10px] font-bold uppercase tracking-widest text-blue-200">የኢትዮጵያ ሙሉወንጌል አማኞች ቤተክርስቲያን</p>
+        <h3 class="text-xs font-extrabold text-white">የቦሌ አጥብያ — ኦፊሴላዊ የአባልነት ባጅ</h3>
+      </div>
+
+      <div class="p-6 text-center">
+        <div class="w-20 h-20 rounded-2xl mx-auto mb-3 bg-blue-50 border-2 border-[#0066B3]/30 overflow-hidden flex items-center justify-center shadow">
+          <img id="badge-modal-photo" src="" alt="Member Photo" class="hidden w-full h-full object-cover" />
+          <i id="badge-modal-photo-icon" data-lucide="user" class="w-9 h-9 text-[#0066B3]"></i>
+        </div>
+
+        <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200 mb-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span> የተረጋገጠ አባል
+        </span>
+        <h2 id="badge-modal-name" class="text-xl font-black text-[#003B6F]">—</h2>
+        <p id="badge-modal-phone" class="text-xs font-semibold text-slate-500 mt-0.5">—</p>
+        <p class="font-mono text-xs font-extrabold text-[#0066B3] bg-blue-50 inline-block px-3 py-1 rounded-lg mt-1.5" id="badge-modal-id">—</p>
+
+        <div class="my-4 p-3 rounded-2xl bg-slate-50 border-2 border-dashed border-blue-200 inline-flex items-center justify-center">
+          <div id="real-qr-code"></div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-blue-50/90 border border-blue-200/80 text-[11px] text-[#003B6F] font-semibold leading-relaxed">
+          ይህንን ዲጂታል ባጅ ለተለያዩ <strong>የህብረት ስብሰባዎች፣ ኮንፈረንሶች እና የአገልጋዮች መገኘት (Attendance)</strong> ይጠቀሙበት።
+        </div>
+
+        <div class="no-print mt-4 grid grid-cols-2 gap-2.5">
+          <button onclick="printMemberBadge()" class="py-2.5 px-3 rounded-xl bg-[#0066B3] hover:bg-[#003B6F] text-white text-xs font-extrabold flex items-center justify-center gap-1.5 transition">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i> ፕሪንት አድርግ
+          </button>
+          <button onclick="downloadMemberBadgeCard()" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold flex items-center justify-center gap-1.5 transition">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i> ዳውንሎድ (PNG)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 7. PRINTABLE SHEET MODAL ================= -->
+  <div id="printable-sheet-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full border-2 border-[#0066B3] flex items-center justify-center font-black text-xs text-[#0066B3]">FGBC</div>
+          <div>
+            <h2 class="text-base font-extrabold text-[#003B6F]">የኢትዮጵያ ሙሉወንጌል አማኞች ቤተክርስቲያን — ቦሌ አጥብያ</h2>
+            <p class="text-xs text-slate-500">“ኢየሱስ ክርስቶስ ትናንትና ዛሬ እስከ ለዘላለምም ያው ነው።” — ዕብራውያን 13፡8</p>
+          </div>
+        </div>
+        <div class="no-print flex items-center gap-2">
+          <button onclick="printPastorSheet()" class="px-4 py-2 rounded-xl bg-[#0066B3] text-white text-xs font-bold flex items-center gap-1.5">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i> አትም (Print)
+          </button>
+          <button onclick="closePrintableSheet()" class="p-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-4 text-slate-800">
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+          <p class="text-xs font-bold text-[#D84374] mb-1">የመጋቢው የዕለት መልዕክት</p>
+          <h3 id="print-title" class="text-lg font-extrabold text-[#003B6F] mb-1"></h3>
+          <p id="print-verse" class="text-xs font-bold text-slate-600 mb-2"></p>
+          <p id="print-body" class="text-sm leading-relaxed"></p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 rounded-2xl border border-slate-200">
+            <p class="text-xs font-extrabold text-[#003B6F] mb-1">የሳምንቱ እና ልዩ ፕሮግራሞች</p>
+            <p id="print-programs" class="text-xs leading-relaxed"></p>
+          </div>
+          <div class="p-4 rounded-2xl border border-slate-200">
+            <p class="text-xs font-extrabold text-[#D84374] mb-1">የጸሎት ርዕሶች</p>
+            <p id="print-prayer" class="text-xs leading-relaxed"></p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl border border-dashed border-slate-300 text-xs">
+          <p class="font-extrabold text-[#003B6F] mb-1">የአስራት እና መባ የባንክ ሂሳብ ቁጥሮች</p>
+          <p>• የኢትዮጵያ ንግድ ባንክ (CBE): <strong>1000294857362</strong></p>
+          <p>• ቴሌብር (Telebirr): <strong>0911223344</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 8. FIREBASE LIVE ENGINE (ZERO DUMMY STATS, REAL DATA ONLY) ================= -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+    import {
+      getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+      sendEmailVerification, signOut, onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getFirestore, doc, setDoc, updateDoc, collection, addDoc,
+      onSnapshot, query, orderBy, getDocs, where
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8COi8zfUVC1s_KzulB_knt8sVPIMaye8",
+      authDomain: "bole-fgbc-cms.firebaseapp.com",
+      projectId: "bole-fgbc-cms",
+      storageBucket: "bole-fgbc-cms.firebasestorage.app",
+      messagingSenderId: "849594417436",
+      appId: "1:849594417436:web:d80183587cec140fcebad9",
+      measurementId: "G-VFVKGHYC4N"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    try { getAnalytics(app); } catch (_) {}
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let uploadedPhotoDataUrl = "";
+    let selectedDmMemberId = null;
+
+    const state = {
+      currentRoute: "member",
+      currentMember: null,
+      members: [], // 100% real registered members from Firebase (Online + Offline Desk)
+      authorizedEmails: {
+        pastor: ["teshaletayealemu@gmail.com"],
+        finance: ["teshaletayealemu@gmail.com"],
+        membership: ["teshaletayealemu@gmail.com"]
+      },
+      authenticatedAdmins: {
+        pastor: null,
+        finance: null,
+        membership: null
+      },
+      pastorPost: {
+        title: "በጸሎት እና በአንድነት የምንጸናበት ወቅት",
+        verse: "1ኛ ቆሮንቶስ 16፡13 — በእምነት ጸንታችሁ ቁሙ፤ ጎልምሱ፤ ጠንክሩ።",
+        body: "የተወደዳችሁ የቦሌ አጥብያ ቅዱሳን፣ በዚህ ሳምንት በየቤታችን እና በየህብረታችን በአንድ ልብ ሆነን ስለ ቤተክርስቲያናችን መንፈሳዊ መነቃቃት እና ስለ ሀገራችን ሰላም እንድንጸልይ አሳስባለሁ። አርብ ምሽት 11፡30 ላይ በዋናው አዳራሽ ልዩ የጸሎት ጊዜ ይኖረናል።",
+        weeklyProgram: "ረቡዕ 11:30 የቃል ጥናት • አርብ 11:30 የጸሎት ጊዜ • እሁድ 2:30 ዋናው አምልኮ",
+        specialProgram: "የወሩ መጨረሻ ቅዳሜ ከጠዋቱ 3:00 ጀምሮ ልዩ የአገልጋዮች እና የቤተሰብ ኮንፈረንስ",
+        announcement: "እሁድ ጠዋት 2:30 ጀምሮ የጌታ እራት ስርዓት ስለሚኖር ሁላችንም በሰዓቱ እንገኝ።",
+        prayer: "ለአዲስ አማኞች መጽናት እና ለወጣቶች መንፈሳዊ እድገት እንጸልይ።"
+      },
+      departments: [
+        {
+          id: "choir",
+          name: "የመዘምራን አገልግሎት",
+          leader: "ወንድም ዳንኤል ግርማ",
+          leaderEmail: "choir@bolefgbc.org",
+          accessCode: "CH-101",
+          messages: []
+        },
+        {
+          id: "youth",
+          name: "የወጣቶች ህብረት",
+          leader: "ወንድም ሳሙኤል አበበ",
+          leaderEmail: "youth@bolefgbc.org",
+          accessCode: "YT-202",
+          messages: []
+        },
+        {
+          id: "deacons",
+          name: "የዲያቆናት ህብረት",
+          leader: "ዲያቆን ዮሐንስ ተስፋዬ",
+          leaderEmail: "deacons@bolefgbc.org",
+          accessCode: "DC-303",
+          messages: []
+        },
+        {
+          id: "children",
+          name: "የህፃናት አገልግሎት",
+          leader: "እህት ሰላማዊት ታደሰ",
+          leaderEmail: "children@bolefgbc.org",
+          accessCode: "KD-404",
+          messages: []
+        }
+      ],
+      authenticatedLeaderDeptId: null,
+      receipts: [],
+      financeFilter: "all",
+      usedRefs: [],
+      blockedFraudCount: 0,
+      prayerRequests: [], // 100% real prayers submitted by members
+      attendanceRecords: [] // Real event attendance logs
+    };
+
+    // ================= FIRESTORE REALTIME LISTENERS =================
+    function initFirestoreListeners() {
+      onSnapshot(doc(db, "church_bole", "config"), (snap) => {
+        if (snap.exists() && snap.data().authorizedEmails) {
+          state.authorizedEmails = { ...state.authorizedEmails, ...snap.data().authorizedEmails };
+          syncAdminEmailInputs();
+        }
+      });
+
+      onSnapshot(doc(db, "church_bole", "pastor_post"), (snap) => {
+        if (snap.exists()) {
+          state.pastorPost = { ...state.pastorPost, ...snap.data() };
+          syncPastorInputs();
+          renderAll();
+        }
+      });
+
+      onSnapshot(collection(db, "church_bole_departments"), (snap) => {
+        if (!snap.empty) {
+          const map = {};
+          snap.forEach((d) => (map[d.id] = { id: d.id, ...d.data() }));
+          state.departments = state.departments.map((base) => map[base.id] || base);
+          renderAll();
+        }
+      });
+
+      onSnapshot(collection(db, "church_bole_members"), (snap) => {
+        const list = [];
+        snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+        list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        state.members = list;
+        if (state.currentMember) {
+          const updated = list.find((m) => m.id === state.currentMember.id);
+          if (updated) state.currentMember = updated;
+        }
+        renderAll();
+      });
+
+      onSnapshot(query(collection(db, "church_bole_prayers"), orderBy("createdAt", "desc")), (snap) => {
+        const list = [];
+        snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+        state.prayerRequests = list;
+        renderAll();
+      });
+
+      onSnapshot(query(collection(db, "church_bole_receipts"), orderBy("createdAt", "desc")), (snap) => {
+        const list = [];
+        const refs = [];
+        snap.forEach((docSnap) => {
+          const item = { id: docSnap.id, ...docSnap.data() };
+          list.push(item);
+          if (item.ref) refs.push(item.ref.toUpperCase());
+        });
+        state.receipts = list;
+        state.usedRefs = refs;
+        renderAll();
+      });
+
+      onSnapshot(query(collection(db, "church_bole_attendance"), orderBy("createdAt", "desc")), (snap) => {
+        const list = [];
+        snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+        state.attendanceRecords = list;
+        renderAll();
+      });
+    }
+
+    // ================= AUTHORIZED EMAILS =================
+    function syncAdminEmailInputs() {
+      const pEl = document.getElementById("cfg-pastor-email");
+      const fEl = document.getElementById("cfg-finance-email");
+      const mEl = document.getElementById("cfg-membership-email");
+      if (pEl) pEl.value = (state.authorizedEmails.pastor || []).join(", ");
+      if (fEl) fEl.value = (state.authorizedEmails.finance || []).join(", ");
+      if (mEl) mEl.value = (state.authorizedEmails.membership || []).join(", ");
+    }
+
+    window.saveAuthorizedAdminEmails = async function () {
+      const pList = (document.getElementById("cfg-pastor-email")?.value || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
+      const fList = (document.getElementById("cfg-finance-email")?.value || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
+      const mList = (document.getElementById("cfg-membership-email")?.value || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
+
+      if (pList.length) state.authorizedEmails.pastor = pList;
+      if (fList.length) state.authorizedEmails.finance = fList;
+      if (mList.length) state.authorizedEmails.membership = mList;
+
+      await setDoc(doc(db, "church_bole", "config"), { authorizedEmails: state.authorizedEmails }, { merge: true });
+      showToast("የተፈቀዱ ኢሜይሎች ተቀምጠዋል!");
+    };
+
+    let lastVerificationSentAt = 0;
+
+    function formatFirebaseAuthError(err) {
+      const code = err?.code || "";
+      if (code === "auth/too-many-requests") {
+        return "ብዙ ሙከራ ስለተደረገ Firebase ለጥቂት ደቂቃዎች ገድቦታል! እባክዎ 2-3 ደቂቃ ጠብቀው ይሞክሩ ወይም ቀድሞ በኢሜይልዎ የተላከውን ሊንክ ይክፈቱ።";
+      }
+      if (code === "auth/wrong-password" || code === "auth/invalid-credential") {
+        return "የይለፍ ቃሉ ተሳስቷል! ቀድሞ የፈጠሩትን ትክክለኛ የይለፍ ቃል ያስገቡ (ወይም በFirebase Console ይቀይሩ)።";
+      }
+      if (code === "auth/email-already-in-use") {
+        return "ይህ ኢሜይል ቀድሞ ተመዝግቧል፤ እባክዎ ትክክለኛውን የይለፍ ቃል አስገብተው ይግቡ።";
+      }
+      return err?.message || "ያልታወቀ ስህተት ተፈጥሯል።";
+    }
+
+    window.sendAdminVerificationEmail = async function (role) {
+      const email = (document.getElementById(`${role}-login-email`)?.value || "").trim().toLowerCase();
+      const pass = (document.getElementById(`${role}-login-pass`)?.value || "").trim();
+      const allowed = state.authorizedEmails[role] || [];
+
+      if (!email) {
+        showToast("እባክዎ መጀመሪያ ኢሜይልዎን ያስገቡ!", true);
+        return;
+      }
+      if (!allowed.includes(email)) {
+        showToast(`ይህ ኢሜይል (${email}) በቤተክርስቲያኒቱ የተፈቀደ አይደለም!`, true);
+        return;
+      }
+      if (pass.length < 6) {
+        showToast("የማረጋገጫ ኢሜይል ለመላክ የይለፍ ቃሉ ቢያንስ 6 ፊደል/ቁጥር መሆን አለበት!", true);
+        return;
+      }
+
+      // 60-second cooldown to prevent Firebase auth/too-many-requests
+      const now = Date.now();
+      if (now - lastVerificationSentAt < 60000) {
+        const waitSec = Math.ceil((60000 - (now - lastVerificationSentAt)) / 1000);
+        showToast(`የማረጋገጫ ሊንክ ቀድሞ ተልኳል! ኢሜይልዎን (Inbox/Spam) ይመልከቱ ወይም ከ ${waitSec} ሰከንድ በኋላ እንደገና ይሞክሩ።`, true);
+        return;
+      }
+
+      try {
+        let cred;
+        try {
+          cred = await signInWithEmailAndPassword(auth, email, pass);
+        } catch (signInErr) {
+          if (signInErr.code === "auth/user-not-found") {
+            cred = await createUserWithEmailAndPassword(auth, email, pass);
+          } else {
+            throw signInErr;
+          }
+        }
+
+        await cred.user.reload();
+        if (cred.user.emailVerified) {
+          showToast(`ኢሜይልዎ (${email}) ቀድሞ በFirebase ተረጋግጧል! አሁን “ግባ” ይጫኑ።`);
+        } else {
+          await sendEmailVerification(cred.user);
+          lastVerificationSentAt = Date.now();
+          showToast(`የማረጋገጫ ሊንክ ወደ ${email} ተልኳል! ኢሜይልዎን (Inbox/Spam) ከፍተው ያረጋግጡና ተመልሰው ይግቡ።`);
+        }
+      } catch (err) {
+        showToast(formatFirebaseAuthError(err), true);
+      }
+    };
+
+    window.authenticateAdminRole = async function (e, role) {
+      e.preventDefault();
+      const email = document.getElementById(`${role}-login-email`).value.trim().toLowerCase();
+      const pass = document.getElementById(`${role}-login-pass`).value.trim();
+      const allowed = state.authorizedEmails[role] || [];
+
+      if (!allowed.includes(email)) {
+        showToast(`ይህ ኢሜይል (${email}) ለዚህ ክፍል አልተፈቀደም!`, true);
+        return;
+      }
+
+      try {
+        let cred;
+        try {
+          cred = await signInWithEmailAndPassword(auth, email, pass);
+        } catch (signInErr) {
+          if (signInErr.code === "auth/user-not-found") {
+            cred = await createUserWithEmailAndPassword(auth, email, pass);
+            await sendEmailVerification(cred.user);
+            lastVerificationSentAt = Date.now();
+            showToast(`አዲስ የማረጋገጫ ሊንክ ወደ ${email} ተልኳል! በኢሜይልዎ ያረጋግጡና እንደገና ይግቡ።`, true);
+            return;
+          }
+          throw signInErr;
+        }
+
+        // Reload user to get latest emailVerified status (DO NOT auto-resend email here to avoid too-many-requests!)
+        await cred.user.reload();
+        if (!cred.user.emailVerified) {
+          showToast(`ኢሜይልዎ (${email}) ገና አልተረጋገጠም! ቀድሞ በኢሜይልዎ የተላከውን ሊንክ ይክፈቱ (ወይም “ኢሜይል አረጋግጥ” የሚለውን ይጫኑ)።`, true);
+          return;
+        }
+
+        state.authenticatedAdmins[role] = cred.user.email;
+        showToast(`ኢሜይል (${cred.user.email}) በFirebase ተረጋግጦ ገብተዋል!`);
+        renderAll();
+      } catch (err) {
+        showToast(formatFirebaseAuthError(err), true);
+      }
+    };
+
+    window.logoutAdminRole = async function (role) {
+      state.authenticatedAdmins[role] = null;
+      try { await signOut(auth); } catch (_) {}
+      renderAll();
+    };
+
+    // ================= ROUTER =================
+    window.navigateTo = function (route) {
+      const validRoutes = ["member", "pastor", "leader", "finance", "membership-admin", "all-admin"];
+      if (!validRoutes.includes(route)) route = "member";
+
+      state.currentRoute = route;
+      window.location.hash = `#/${route}`;
+
+      ["member-auth", "member", "pastor", "leader", "finance", "membership-admin", "all-admin"].forEach((id) => {
+        document.getElementById(`view-${id}`).classList.add("hidden");
+      });
+
+      const badge = document.getElementById("active-portal-badge");
+      const printBtn = document.getElementById("btn-print-sheet");
+      printBtn.classList.add("hidden");
+
+      if (route === "member") {
+        if (!state.currentMember) {
+          document.getElementById("view-member-auth").classList.remove("hidden");
+          badge.textContent = "የምዕመናን መመዝገቢያ / መግቢያ";
+        } else {
+          document.getElementById("view-member").classList.remove("hidden");
+          badge.textContent = "የምዕመናን ገጽ (Member)";
+        }
+      } else if (route === "pastor") {
+        document.getElementById("view-pastor").classList.remove("hidden");
+        badge.textContent = "የመጋቢው አድሚን (Pastor Portal)";
+        printBtn.classList.remove("hidden");
+      } else if (route === "leader") {
+        document.getElementById("view-leader").classList.remove("hidden");
+        badge.textContent = "የህብረት መሪ ፖርታል (Leader Portal)";
+      } else if (route === "finance") {
+        document.getElementById("view-finance").classList.remove("hidden");
+        badge.textContent = "የፋይናንስ አድሚን (Finance Portal)";
+      } else if (route === "membership-admin") {
+        document.getElementById("view-membership-admin").classList.remove("hidden");
+        badge.textContent = "የአባላት መዝገብ አድሚን (Membership Admin)";
+      } else if (route === "all-admin") {
+        document.getElementById("view-all-admin").classList.remove("hidden");
+        badge.textContent = "All-Admin Directory";
+      }
+
+      renderAll();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.copyPortalLink = function (hashPath, label) {
+      const fullLink = window.location.href.split("#")[0] + hashPath;
+      navigator.clipboard?.writeText(fullLink);
+      showToast(`${label} (${fullLink}) ተቀድቷል!`);
+    };
+
+    window.addEventListener("hashchange", () => {
+      const hashRoute = window.location.hash.replace("#/", "");
+      navigateTo(hashRoute || "member");
+    });
+
+    // ================= MEMBER PHOTO UPLOAD & AUTH =================
+    window.handlePhotoUpload = function (e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (ev) {
+        uploadedPhotoDataUrl = ev.target.result;
+        const img = document.getElementById("reg-photo-preview");
+        const icon = document.getElementById("reg-photo-placeholder");
+        img.src = uploadedPhotoDataUrl;
+        img.classList.remove("hidden");
+        icon.classList.add("hidden");
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.toggleAuthTab = function (mode) {
+      const isReg = mode === "register";
+      document.getElementById("member-register-form").classList.toggle("hidden", !isReg);
+      document.getElementById("member-login-form").classList.toggle("hidden", isReg);
+
+      document.getElementById("auth-tab-register").classList.toggle("bg-[#0066B3]", isReg);
+      document.getElementById("auth-tab-register").classList.toggle("text-white", isReg);
+      document.getElementById("auth-tab-register").classList.toggle("text-blue-200", !isReg);
+
+      document.getElementById("auth-tab-login").classList.toggle("bg-[#0066B3]", !isReg);
+      document.getElementById("auth-tab-login").classList.toggle("text-white", !isReg);
+      document.getElementById("auth-tab-login").classList.toggle("text-blue-200", isReg);
+    };
+
+    window.registerNewMember = async function (e) {
+      e.preventDefault();
+      const fullName = document.getElementById("reg-fullname").value.trim();
+      const phone = document.getElementById("reg-phone").value.trim();
+      const address = document.getElementById("reg-address").value.trim() || "ቦሌ";
+      const password = document.getElementById("reg-password").value.trim();
+      const initialDept = document.getElementById("reg-initial-dept").value;
+
+      const existing = state.members.find((m) => m.phone === phone);
+      if (existing) {
+        showToast("ይህ ስልክ ቁጥር ቀድሞ ተመዝግቧል! እባክዎ በመግቢያ (Login) ይግቡ።", true);
+        toggleAuthTab("login");
+        document.getElementById("login-member-phone").value = phone;
+        return;
+      }
+
+      const deptStatus = { choir: "none", youth: "none", deacons: "none", children: "none" };
+      if (initialDept) deptStatus[initialDept] = "pending";
+
+      const newMember = {
+        id: "FGBC-BL-" + Math.floor(1000 + Math.random() * 9000),
+        fullName,
+        phone,
+        password,
+        address,
+        photoUrl: uploadedPhotoDataUrl || "",
+        registrationType: "Online",
+        deptStatus,
+        absences: { choir: 0, youth: 0, deacons: 0, children: 0 },
+        directMessages: [],
+        createdAt: Date.now()
+      };
+
+      uploadedPhotoDataUrl = "";
+      document.getElementById("reg-photo-preview").classList.add("hidden");
+      document.getElementById("reg-photo-placeholder").classList.remove("hidden");
+
+      state.members.unshift(newMember);
+      state.currentMember = newMember;
+      await setDoc(doc(db, "church_bole_members", newMember.id), newMember);
+
+      e.target.reset();
+      showToast(`እንኳን ደህና መጡ ${fullName}! ባጅዎ እና QR ኮድዎ ተዘጋጅተዋል።`);
+      navigateTo("member");
+    };
+
+    window.loginExistingMember = function (e) {
+      e.preventDefault();
+      const phone = document.getElementById("login-member-phone").value.trim();
+      const pass = document.getElementById("login-member-pass").value.trim();
+      const found = state.members.find((m) => m.phone === phone && m.password === pass);
+      if (!found) {
+        showToast("የተሳሳተ ስልክ ቁጥር ወይም የይለፍ ቃል ነው!", true);
+        return;
+      }
+      state.currentMember = found;
+      e.target.reset();
+      showToast(`እንኳን በደህና ተመለሱ ${found.fullName}!`);
+      navigateTo("member");
+    };
+
+    window.logoutMember = function () {
+      state.currentMember = null;
+      showToast("ከገጽዎ ወጥተዋል።");
+      navigateTo("member");
+    };
+
+    // ================= OFFLINE / MEMBERSHIP ADMIN REGISTRATION =================
+    window.registerOfflineMemberFull = async function (e) {
+      e.preventDefault();
+      const fullName = document.getElementById("off-reg-name").value.trim();
+      const phone = document.getElementById("off-reg-phone").value.trim();
+      const address = document.getElementById("off-reg-address").value.trim();
+      const deptId = document.getElementById("off-reg-dept").value;
+
+      const deptStatus = { choir: "none", youth: "none", deacons: "none", children: "none" };
+      if (deptId) deptStatus[deptId] = "approved"; // Office desk registers directly into their ministry
+
+      const newMember = {
+        id: "FGBC-OFF-" + Math.floor(1000 + Math.random() * 9000),
+        fullName,
+        phone,
+        password: phone.slice(-4) || "1234",
+        address,
+        photoUrl: "",
+        registrationType: "Offline (ጽህፈት ቤት)",
+        deptStatus,
+        absences: { choir: 0, youth: 0, deacons: 0, children: 0 },
+        directMessages: [],
+        createdAt: Date.now()
+      };
+
+      await setDoc(doc(db, "church_bole_members", newMember.id), newMember);
+      e.target.reset();
+      showToast(`${fullName} በጽህፈት ቤት የአባላት መዝገብ ላይ ተመዝግበዋል!`);
+      renderAll();
+    };
+
+    // ================= REAL QR CODE GENERATION, PRINT & DOWNLOAD BADGE =================
+    function renderQRCodesForMember(member) {
+      const payload = JSON.stringify({
+        church: "FGBC-BOLE",
+        memberId: member.id,
+        name: member.fullName,
+        phone: member.phone
+      });
+
+      const miniEl = document.getElementById("mini-qr-container");
+      if (miniEl && window.QRCode) {
+        miniEl.innerHTML = "";
+        new QRCode(miniEl, { text: payload, width: 42, height: 42, correctLevel: QRCode.CorrectLevel.M });
+      }
+
+      const modalQrEl = document.getElementById("real-qr-code");
+      if (modalQrEl && window.QRCode) {
+        modalQrEl.innerHTML = "";
+        new QRCode(modalQrEl, { text: payload, width: 148, height: 148, correctLevel: QRCode.CorrectLevel.H });
+      }
+    }
+
+    window.openMemberBadgeModal = function () {
+      if (!state.currentMember) return;
+      const m = state.currentMember;
+      document.getElementById("badge-modal-name").textContent = m.fullName;
+      document.getElementById("badge-modal-phone").textContent = m.phone;
+      document.getElementById("badge-modal-id").textContent = m.id;
+
+      const badgeImg = document.getElementById("badge-modal-photo");
+      const badgeIcon = document.getElementById("badge-modal-photo-icon");
+      if (m.photoUrl) {
+        badgeImg.src = m.photoUrl;
+        badgeImg.classList.remove("hidden");
+        badgeIcon.classList.add("hidden");
+      } else {
+        badgeImg.classList.add("hidden");
+        badgeIcon.classList.remove("hidden");
+      }
+
+      renderQRCodesForMember(m);
+      document.getElementById("member-badge-modal").classList.remove("hidden");
+      lucide.createIcons();
+    };
+
+    window.closeMemberBadgeModal = function () {
+      document.getElementById("member-badge-modal").classList.add("hidden");
+    };
+
+    window.printMemberBadge = function () {
+      document.body.classList.remove("print-sheet-mode");
+      document.body.classList.add("print-badge-mode");
+      window.print();
+      setTimeout(() => document.body.classList.remove("print-badge-mode"), 400);
+    };
+
+    window.downloadMemberBadgeCard = function () {
+      const m = state.currentMember;
+      if (!m) return;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 640;
+      canvas.height = 900;
+      const ctx = canvas.getContext("2d");
+
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const grad = ctx.createLinearGradient(0, 0, 640, 210);
+      grad.addColorStop(0, "#002347");
+      grad.addColorStop(1, "#0066B3");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 640, 210);
+
+      ctx.fillStyle = "#FFFFFF";
+      ctx.textAlign = "center";
+      ctx.font = "bold 22px 'Noto Sans Ethiopic', sans-serif";
+      ctx.fillText("የኢትዮጵያ ሙሉወንጌል አማኞች ቤተክርስቲያን", 320, 72);
+      ctx.fillStyle = "#BFDBFE";
+      ctx.font = "bold 18px 'Noto Sans Ethiopic', sans-serif";
+      ctx.fillText("የቦሌ አጥብያ — የአባልነት ዲጂታል ባጅ", 320, 118);
+
+      ctx.fillStyle = "#003B6F";
+      ctx.font = "900 32px 'Noto Sans Ethiopic', sans-serif";
+      ctx.fillText(m.fullName, 320, 395);
+
+      ctx.fillStyle = "#475569";
+      ctx.font = "bold 20px 'Noto Sans Ethiopic', sans-serif";
+      ctx.fillText(`ስልክ: ${m.phone}  |  መለያ: ${m.id}`, 320, 440);
+
+      const qrCanvas = document.querySelector("#real-qr-code canvas");
+      const qrImg = document.querySelector("#real-qr-code img");
+
+      const finishExport = (photoImgObj) => {
+        if (photoImgObj) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.roundRect(255, 235, 130, 130, 24);
+          ctx.clip();
+          ctx.drawImage(photoImgObj, 255, 235, 130, 130);
+          ctx.restore();
+        } else {
+          ctx.fillStyle = "#E0F2FE";
+          ctx.beginPath();
+          ctx.roundRect(255, 235, 130, 130, 24);
+          ctx.fill();
+          ctx.fillStyle = "#003B6F";
+          ctx.font = "bold 36px sans-serif";
+          ctx.fillText("FGBC", 320, 312);
+        }
+
+        if (qrCanvas) {
+          ctx.drawImage(qrCanvas, 225, 480, 190, 190);
+        } else if (qrImg && qrImg.complete) {
+          ctx.drawImage(qrImg, 225, 480, 190, 190);
+        }
+
+        ctx.fillStyle = "#003B6F";
+        ctx.font = "bold 16px 'Noto Sans Ethiopic', sans-serif";
+        ctx.fillText("ወደ ዕብራውያን 13፡8 • የቦሌ አጥብያ መታወቂያ ባጅ", 320, 735);
+
+        const link = document.createElement("a");
+        link.download = `FGBC-Bole-Badge-${m.id}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        showToast("የአባልነት ባጅ (PNG) ዳውንሎድ ተደርጓል!");
+      };
+
+      if (m.photoUrl) {
+        const imgObj = new Image();
+        imgObj.onload = () => finishExport(imgObj);
+        imgObj.onerror = () => finishExport(null);
+        imgObj.src = m.photoUrl;
+      } else {
+        finishExport(null);
+      }
+    };
+
+    // ================= PASTOR DIRECTORY MODAL & DIRECT MESSAGING =================
+    window.openMembersDirectoryModal = function () {
+      document.getElementById("pastor-members-modal").classList.remove("hidden");
+      renderPastorMembersModalList();
+      lucide.createIcons();
+    };
+
+    window.closeMembersDirectoryModal = function () {
+      document.getElementById("pastor-members-modal").classList.add("hidden");
+      document.getElementById("pastor-dm-composer").classList.add("hidden");
+    };
+
+    window.openDirectMessageTo = function (memberId) {
+      const m = state.members.find((item) => item.id === memberId);
+      if (!m) return;
+      selectedDmMemberId = memberId;
+      document.getElementById("dm-target-label").textContent = `ለ ${m.fullName} (${m.phone}):`;
+      document.getElementById("pastor-dm-composer").classList.remove("hidden");
+      document.getElementById("dm-message-input").focus();
+    };
+
+    window.sendDirectMessageToMember = async function (e) {
+      e.preventDefault();
+      const m = state.members.find((item) => item.id === selectedDmMemberId);
+      const msgText = document.getElementById("dm-message-input").value.trim();
+      if (!m || !msgText) return;
+
+      const updatedMessages = [
+        { text: msgText, date: new Date().toLocaleDateString("am-ET"), from: "መጋቢ" },
+        ...(m.directMessages || [])
+      ];
+      m.directMessages = updatedMessages;
+      await setDoc(doc(db, "church_bole_members", m.id), { directMessages: updatedMessages }, { merge: true });
+
+      e.target.reset();
+      document.getElementById("pastor-dm-composer").classList.add("hidden");
+      showToast(`ቀጥታ መልዕክት ለ ${m.fullName} ተልኳል!`);
+    };
+
+    window.renderPastorMembersModalList = function () {
+      const q = (document.getElementById("pastor-dir-search")?.value || "").trim().toLowerCase();
+      const deptFilter = document.getElementById("pastor-dir-dept")?.value || "all";
+
+      const filtered = state.members.filter((m) => {
+        const matchesText =
+          !q ||
+          (m.fullName || "").toLowerCase().includes(q) ||
+          (m.phone || "").toLowerCase().includes(q) ||
+          (m.address || "").toLowerCase().includes(q);
+        const matchesDept = deptFilter === "all" || m.deptStatus?.[deptFilter] === "approved";
+        return matchesText && matchesDept;
+      });
+
+      const listEl = document.getElementById("pastor-dir-list");
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="p-8 text-center text-xs text-slate-500 bg-blue-50/50 rounded-2xl">በዚህ ፍለጋ የተገኘ አባል የለም።</div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered
+        .map((m) => {
+          const approvedNames = state.departments
+            .filter((d) => m.deptStatus?.[d.id] === "approved")
+            .map((d) => d.name)
+            .join(", ");
+          return `
+            <div class="p-3.5 rounded-2xl bg-blue-50/60 border border-blue-200/70 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="text-xs font-extrabold text-[#003B6F]">${m.fullName}</span>
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-[#003B6F] text-white">${m.phone}</span>
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-100 text-[#0066B3]">${m.address || "ቦሌ"}</span>
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${m.registrationType?.includes("Offline") ? "bg-amber-100 text-amber-800" : "bg-emerald-100 text-emerald-800"}">${m.registrationType || "Online"}</span>
+                </div>
+                <p class="text-[11px] text-slate-600 mt-1">የሚያገለግሉበት ዘርፍ: <strong>${approvedNames || "ገና አልተመደበም"}</strong></p>
+              </div>
+              <button onclick="openDirectMessageTo('${m.id}')" class="px-3.5 py-2 rounded-xl bg-[#0066B3] hover:bg-[#003B6F] text-white text-xs font-extrabold transition flex items-center gap-1.5">
+                <i data-lucide="send" class="w-3.5 h-3.5"></i> መልዕክት ላክ
+              </button>
+            </div>
+          `;
+        })
+        .join("");
+      lucide.createIcons();
+    };
+
+    // ================= 3+ ABSENCES (MISSING MEMBERS) TRACKING & MODAL =================
+    function getMissingMembersList() {
+      // Returns members with 3 or more absences in ANY department
+      const results = [];
+      state.members.forEach((m) => {
+        const abs = m.absences || {};
+        const flaggedDepts = [];
+        let maxAbs = 0;
+        state.departments.forEach((d) => {
+          const count = Number(abs[d.id] || 0);
+          if (count >= 3) {
+            flaggedDepts.push(`${d.name} (${count} ጊዜ)`);
+            if (count > maxAbs) maxAbs = count;
+          }
+        });
+        if (flaggedDepts.length > 0) {
+          results.push({ member: m, flaggedDepts, maxAbs });
+        }
+      });
+      return results;
+    }
+
+    window.openMissingMembersModal = function () {
+      const missing = getMissingMembersList();
+      const listEl = document.getElementById("missing-members-modal-list");
+      if (missing.length === 0) {
+        listEl.innerHTML = `<div class="p-8 text-center text-xs text-slate-500 bg-slate-50 rounded-2xl">እስካሁን ከ3 ጊዜ በላይ የቀረ (የጠፋ) አባል የለም።</div>`;
+      } else {
+        listEl.innerHTML = missing
+          .map(
+            (item) => `
+            <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-extrabold text-slate-900">${item.member.fullName}</span>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#D84374] text-white">${item.maxAbs} ጊዜ ቀርተዋል</span>
+                </div>
+                <p class="text-xs text-slate-600 mt-0.5">ስልክ: <strong>${item.member.phone}</strong> • ሰፈር: ${item.member.address || "ቦሌ"}</p>
+                <p class="text-[11px] font-bold text-rose-800 mt-1">የቀሩበት ዘርፍ: ${item.flaggedDepts.join(" | ")}</p>
+              </div>
+              <a href="tel:${item.member.phone}" class="px-3.5 py-2 rounded-xl bg-slate-900 text-white text-xs font-extrabold flex items-center gap-1.5">
+                <i data-lucide="phone-call" class="w-3.5 h-3.5"></i> ደውለው ይጠይቁ
+              </a>
+            </div>
+          `
+          )
+          .join("");
+      }
+      document.getElementById("missing-members-modal").classList.remove("hidden");
+      lucide.createIcons();
+    };
+
+    window.closeMissingMembersModal = function () {
+      document.getElementById("missing-members-modal").classList.add("hidden");
+    };
+
+    // ================= LEADER EVENT ATTENDANCE RECORDER =================
+    window.saveEventAttendance = async function () {
+      const deptId = state.authenticatedLeaderDeptId;
+      if (!deptId) return;
+      const eventName = document.getElementById("att-event-name").value.trim() || "የህብረት ፕሮግራም";
+      const eventDate = document.getElementById("att-event-date").value || new Date().toISOString().split("T")[0];
+
+      const deptMembers = state.members.filter((m) => m.deptStatus?.[deptId] === "approved");
+      if (deptMembers.length === 0) {
+        showToast("በዚህ ህብረት ውስጥ የጸደቁ አባላት የሉም።", true);
+        return;
+      }
+
+      const presentIds = [];
+      const absentIds = [];
+
+      for (const m of deptMembers) {
+        const cb = document.getElementById(`att-cb-${m.id}`);
+        const isPresent = cb ? cb.checked : true;
+        if (isPresent) {
+          presentIds.push(m.id);
+        } else {
+          absentIds.push(m.id);
+          const currentAbs = Number(m.absences?.[deptId] || 0) + 1;
+          m.absences = { ...(m.absences || {}), [deptId]: currentAbs };
+          await setDoc(doc(db, "church_bole_members", m.id), { absences: m.absences }, { merge: true });
+        }
+      }
+
+      await addDoc(collection(db, "church_bole_attendance"), {
+        deptId,
+        eventName,
+        eventDate,
+        presentCount: presentIds.length,
+        absentCount: absentIds.length,
+        createdAt: Date.now()
+      });
+
+      showToast(`የ"${eventName}" መገኘት ተመዝግቧል! (የተገኙ: ${presentIds.length}፣ የቀሩ: ${absentIds.length})`);
+      renderAll();
+    };
+
+    // ================= SPLASH, TOAST & OTHER ACTIONS =================
+    function syncPastorInputs() {
+      document.getElementById("input-pastor-title").value = state.pastorPost.title;
+      document.getElementById("input-pastor-verse").value = state.pastorPost.verse;
+      document.getElementById("input-pastor-body").value = state.pastorPost.body;
+      document.getElementById("input-weekly-prog").value = state.pastorPost.weeklyProgram || "";
+      document.getElementById("input-special-prog").value = state.pastorPost.specialProgram || "";
+      document.getElementById("input-church-ann").value = state.pastorPost.announcement;
+      document.getElementById("input-church-prayer").value = state.pastorPost.prayer;
+    }
+
+    function runSplash() {
+      const splash = document.getElementById("splash-screen");
+      splash.classList.remove("fade-out");
+      setTimeout(() => splash.classList.add("fade-out"), 2850);
+    }
+
+    window.replaySplash = function () {
+      const splash = document.getElementById("splash-screen");
+      splash.classList.remove("fade-out");
+      const wrap = splash.querySelector(".splash-logo-wrap");
+      const bar = splash.querySelector(".splash-loader-bar");
+      wrap.style.animation = "none";
+      bar.style.animation = "none";
+      void wrap.offsetWidth;
+      wrap.style.animation = "";
+      bar.style.animation = "";
+      setTimeout(() => splash.classList.add("fade-out"), 2850);
+    };
+
+    function showToast(msg, isError = false) {
+      const box = document.getElementById("toast-box");
+      const content = document.getElementById("toast-content");
+      const text = document.getElementById("toast-msg");
+      text.textContent = msg;
+      content.className = `flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl text-white text-sm font-semibold border ${isError ? "bg-rose-800 border-rose-400/40" : "bg-[#002347] border-blue-400/30"}`;
+      box.classList.remove("translate-y-24", "opacity-0");
+      setTimeout(() => box.classList.add("translate-y-24", "opacity-0"), 3400);
+    }
+
+    window.copyText = function (txt, label) {
+      navigator.clipboard?.writeText(txt);
+      showToast(label);
+    };
+
+    window.requestJoinDept = async function (deptId) {
+      if (!state.currentMember) return;
+      state.currentMember.deptStatus[deptId] = "pending";
+      await setDoc(doc(db, "church_bole_members", state.currentMember.id), state.currentMember, { merge: true });
+      showToast("የመቀላቀል ጥያቄ ተልኳል፤ ፈቃድ እስኪሰጥ የመጋቢውን መልዕክት ብቻ ያያሉ።");
+      renderAll();
+    };
+
+    window.submitTithe = async function (e) {
+      e.preventDefault();
+      if (!state.currentMember) return;
+      const type = document.getElementById("tithe-type").value;
+      const amount = Number(document.getElementById("tithe-amount").value);
+      const ref = document.getElementById("tithe-ref").value.trim().toUpperCase();
+
+      const q = query(collection(db, "church_bole_receipts"), where("ref", "==", ref));
+      const existing = await getDocs(q);
+      if (!existing.empty || state.usedRefs.includes(ref)) {
+        state.blockedFraudCount++;
+        showToast(`ማስጠንቀቂያ! የትራንዛክሽን ቁጥር (${ref}) ከዚህ በፊት ጥቅም ላይ ውሏል!`, true);
+        renderAll();
+        return;
+      }
+
+      const newReceipt = {
+        member: state.currentMember.fullName,
+        phone: state.currentMember.phone,
+        method: ref.startsWith("FT") ? "CBE Mobile" : "Telebirr",
+        type,
+        amount,
+        ref,
+        status: "pending",
+        date: "አሁን",
+        createdAt: Date.now()
+      };
+
+      state.usedRefs.push(ref);
+      await addDoc(collection(db, "church_bole_receipts"), newReceipt);
+      e.target.reset();
+      showToast("ደረሰኝዎ በተሳካ ሁኔታ ወደ ፋይናንስ ተልኳል!");
+      renderAll();
+    };
+
+    window.submitPrayerRequest = async function (e) {
+      e.preventDefault();
+      const text = document.getElementById("prayer-input").value.trim();
+      const visibility = document.getElementById("prayer-visibility").value;
+      const anon = document.getElementById("prayer-anon").checked;
+
+      await addDoc(collection(db, "church_bole_prayers"), {
+        sender: anon ? "ስሜ አይጠቀስ" : (state.currentMember?.fullName || "ምዕመን"),
+        text,
+        visibility,
+        amenCount: 1,
+        prayed: false,
+        createdAt: Date.now()
+      });
+      e.target.reset();
+      showToast(visibility === "public" ? "የጸሎት ርዕስዎ ለሁሉም ምዕመናን ተጋርቷል!" : "የጸሎት ርዕስዎ በሚስጥር ለመጋቢው ተልኳል።");
+      renderAll();
+    };
+
+    window.joinMemberPrayer = async function (prayerId) {
+      const p = state.prayerRequests.find((item) => item.id === prayerId);
+      if (p) {
+        const nextCount = (p.amenCount || 0) + 1;
+        p.amenCount = nextCount;
+        await updateDoc(doc(db, "church_bole_prayers", prayerId), { amenCount: nextCount });
+        showToast("አሜን! አብረው ስለጸለዩ እግዚአብሔር ይባርክዎ።");
+        renderAll();
+      }
+    };
+
+    window.publishPastorMessage = async function (e) {
+      e.preventDefault();
+      state.pastorPost = {
+        title: document.getElementById("input-pastor-title").value,
+        verse: document.getElementById("input-pastor-verse").value,
+        body: document.getElementById("input-pastor-body").value,
+        weeklyProgram: document.getElementById("input-weekly-prog").value,
+        specialProgram: document.getElementById("input-special-prog").value,
+        announcement: document.getElementById("input-church-ann").value,
+        prayer: document.getElementById("input-church-prayer").value
+      };
+      await setDoc(doc(db, "church_bole", "pastor_post"), state.pastorPost, { merge: true });
+      showToast("የመጋቢው የዕለት መልዕክት እና ፕሮግራሞች ተሰራጭተዋል!");
+      renderAll();
+    };
+
+    window.updateLeaderCode = async function (deptId) {
+      const dept = state.departments.find((d) => d.id === deptId);
+      const newCodeInput = document.getElementById(`code-input-${deptId}`);
+      const newLeaderInput = document.getElementById(`leader-input-${deptId}`);
+      const newEmailInput = document.getElementById(`email-input-${deptId}`);
+      if (newCodeInput && newCodeInput.value.trim()) {
+        dept.accessCode = newCodeInput.value.trim().toUpperCase();
+        dept.leader = newLeaderInput.value.trim() || dept.leader;
+        if (newEmailInput && newEmailInput.value.trim()) {
+          dept.leaderEmail = newEmailInput.value.trim().toLowerCase();
+        }
+        if (state.authenticatedLeaderDeptId === deptId) {
+          state.authenticatedLeaderDeptId = null;
+        }
+        await setDoc(doc(db, "church_bole_departments", dept.id), dept, { merge: true });
+        showToast(`የ${dept.name} ኢሜይል እና ኮድ (${dept.accessCode}) ተዘምኗል!`);
+        renderAll();
+      }
+    };
+
+    window.togglePrayed = async function (id) {
+      const p = state.prayerRequests.find((item) => item.id === id);
+      if (p) {
+        p.prayed = !p.prayed;
+        await updateDoc(doc(db, "church_bole_prayers", id), { prayed: p.prayed });
+        showToast("የጸሎት ሁኔታ ተዘምኗል።");
+        renderAll();
+      }
+    };
+
+    window.authenticateLeader = function (e) {
+      e.preventDefault();
+      const deptId = document.getElementById("login-dept-select").value;
+      const enteredEmail = document.getElementById("login-leader-email").value.trim().toLowerCase();
+      const enteredCode = document.getElementById("login-leader-code").value.trim().toUpperCase();
+      const dept = state.departments.find((d) => d.id === deptId);
+
+      if (!dept || dept.leaderEmail?.toLowerCase() !== enteredEmail) {
+        showToast("ይህ ኢሜይል ለዚህ ህብረት መሪነት አልተፈቀደም!", true);
+        return;
+      }
+      if (dept.accessCode !== enteredCode) {
+        showToast("የተሳሳተ የመለያ ኮድ ነው!", true);
+        return;
+      }
+
+      state.authenticatedLeaderDeptId = deptId;
+      showToast(`እንኳን ደህና መጡ ${dept.leader}! ወደ ${dept.name} ገብተዋል።`);
+      renderAll();
+    };
+
+    window.logoutLeader = function () {
+      state.authenticatedLeaderDeptId = null;
+      renderAll();
+    };
+
+    window.decideMemberJoin = async function (memberId, deptId, decision) {
+      const member = state.members.find((m) => m.id === memberId);
+      const dept = state.departments.find((d) => d.id === deptId);
+      if (member && dept) {
+        member.deptStatus[deptId] = decision;
+        await setDoc(doc(db, "church_bole_members", member.id), member, { merge: true });
+        showToast(decision === "approved" ? `የ${member.fullName} ጥያቄ ጸድቋል!` : "ጥያቄው ውድቅ ተደርጓል።");
+        renderAll();
+      }
+    };
+
+    window.sendDepartmentMessage = async function (e) {
+      e.preventDefault();
+      const dept = state.departments.find((d) => d.id === state.authenticatedLeaderDeptId);
+      if (!dept) return;
+      const title = document.getElementById("dept-msg-title").value.trim();
+      const eventTime = document.getElementById("dept-msg-event-time").value.trim();
+      const body = document.getElementById("dept-msg-body").value.trim();
+      dept.messages.unshift({ title, eventTime, body, time: "አሁን" });
+      await setDoc(doc(db, "church_bole_departments", dept.id), dept, { merge: true });
+      e.target.reset();
+      showToast(`መልዕክቱ ለተፈቀደላቸው የ${dept.name} አባላት ብቻ ተልኳል!`);
+      renderAll();
+    };
+
+    window.setFinanceFilter = function (filter) {
+      state.financeFilter = filter;
+      ["all", "pending", "verified"].forEach((f) => {
+        const btn = document.getElementById(`fin-filter-${f}`);
+        btn.classList.toggle("bg-[#0066B3]", f === filter);
+        btn.classList.toggle("text-white", f === filter);
+        btn.classList.toggle("text-blue-200", f !== filter);
+      });
+      renderAll();
+    };
+
+    window.verifyReceipt = async function (id) {
+      const rec = state.receipts.find((r) => r.id === id);
+      if (rec) {
+        rec.status = "verified";
+        await updateDoc(doc(db, "church_bole_receipts", id), { status: "verified" });
+        showToast(`ደረሰኝ (${rec.ref}) በፋይናንስ ተረጋግጧል!`);
+        renderAll();
+      }
+    };
+
+    window.openPrintableSheet = function () {
+      document.getElementById("print-title").textContent = state.pastorPost.title;
+      document.getElementById("print-verse").textContent = state.pastorPost.verse;
+      document.getElementById("print-body").textContent = state.pastorPost.body;
+      document.getElementById("print-programs").textContent = `${state.pastorPost.weeklyProgram || ""} | ${state.pastorPost.specialProgram || ""}`;
+      document.getElementById("print-prayer").textContent = state.pastorPost.prayer;
+      document.getElementById("printable-sheet-modal").classList.remove("hidden");
+    };
+
+    window.printPastorSheet = function () {
+      document.body.classList.remove("print-badge-mode");
+      document.body.classList.add("print-sheet-mode");
+      window.print();
+      setTimeout(() => document.body.classList.remove("print-sheet-mode"), 400);
+    };
+
+    window.closePrintableSheet = function () {
+      document.getElementById("printable-sheet-modal").classList.add("hidden");
+    };
+
+    // ================= MASTER RENDERER =================
+    function renderAll() {
+      // Admin Gates
+      const pastorLoggedIn = Boolean(state.authenticatedAdmins.pastor);
+      document.getElementById("pastor-login-gate").classList.toggle("hidden", pastorLoggedIn);
+      document.getElementById("pastor-dashboard-content").classList.toggle("hidden", !pastorLoggedIn);
+      if (pastorLoggedIn) document.getElementById("active-pastor-email").textContent = state.authenticatedAdmins.pastor;
+
+      const financeLoggedIn = Boolean(state.authenticatedAdmins.finance);
+      document.getElementById("finance-login-gate").classList.toggle("hidden", financeLoggedIn);
+      document.getElementById("finance-dashboard-content").classList.toggle("hidden", !financeLoggedIn);
+      if (financeLoggedIn) document.getElementById("active-finance-email").textContent = state.authenticatedAdmins.finance;
+
+      const membershipLoggedIn = Boolean(state.authenticatedAdmins.membership);
+      document.getElementById("membership-login-gate").classList.toggle("hidden", membershipLoggedIn);
+      document.getElementById("membership-dashboard-content").classList.toggle("hidden", !membershipLoggedIn);
+      if (membershipLoggedIn) document.getElementById("active-membership-email").textContent = state.authenticatedAdmins.membership;
+
+      // Real Data KPIs on Pastor Dashboard (ZERO dummy numbers!)
+      const missingList = getMissingMembersList();
+      document.getElementById("kpi-real-members").textContent = `${state.members.length} አባላት`;
+      document.getElementById("kpi-real-depts").textContent = `${state.departments.length} ዘርፎች`;
+      document.getElementById("kpi-missing-members").textContent = `${missingList.length} አባላት`;
+      document.getElementById("kpi-real-prayers").textContent = `${state.prayerRequests.length} ርዕሶች`;
+      const prayedCount = state.prayerRequests.filter((p) => p.prayed).length;
+      document.getElementById("kpi-prayed-sub").textContent = `${prayedCount} ተጸልዮባቸዋል`;
+
+      const leaderMissingBadge = document.getElementById("leader-missing-badge");
+      if (leaderMissingBadge) leaderMissingBadge.textContent = missingList.length;
+
+      // Pastor Post & Programs
+      document.getElementById("pastor-msg-title").textContent = state.pastorPost.title;
+      document.getElementById("pastor-msg-verse").textContent = state.pastorPost.verse;
+      document.getElementById("pastor-msg-body").textContent = state.pastorPost.body;
+      document.getElementById("church-announcement-text").textContent = `ማስታወቂያ: ${state.pastorPost.announcement}`;
+      document.getElementById("church-prayer-text").textContent = state.pastorPost.prayer;
+
+      const tickerItems = `
+        <span>📅 የሳምንቱ ፕሮግራም: ${state.pastorPost.weeklyProgram || ""}</span>
+        <span>✨ ልዩ ፕሮግራም: ${state.pastorPost.specialProgram || ""}</span>
+        <span>📢 ${state.pastorPost.announcement || ""}</span>
+      `;
+      document.getElementById("member-programs-ticker").innerHTML = tickerItems + tickerItems;
+
+      document.getElementById("member-special-programs-list").innerHTML = `
+        <div class="p-2.5 rounded-xl bg-blue-50/80 border border-blue-100">
+          <span class="text-[10px] font-extrabold text-[#0066B3] block">ሳምንታዊ መርሐ-ግብር</span>
+          <span class="font-semibold text-slate-800">${state.pastorPost.weeklyProgram || ""}</span>
+        </div>
+        <div class="p-2.5 rounded-xl bg-pink-50/70 border border-pink-100">
+          <span class="text-[10px] font-extrabold text-[#D84374] block">ልዩ ፕሮግራም / ኮንፈረንስ</span>
+          <span class="font-semibold text-slate-800">${state.pastorPost.specialProgram || ""}</span>
+        </div>
+      `;
+
+      // Public Congregational Prayer Wall
+      const publicPrayers = state.prayerRequests.filter((p) => p.visibility !== "pastor");
+      document.getElementById("public-prayer-wall-list").innerHTML =
+        publicPrayers.length === 0
+          ? `<p class="text-xs text-slate-400 text-center py-4 bg-blue-50/40 rounded-2xl">እስካሁን የተላከ የጋራ ጸሎት ርዕስ የለም፤ የመጀመሪያውን ከላይ ያጋሩ።</p>`
+          : publicPrayers
+              .map(
+                (p) => `
+                <div class="p-3.5 rounded-2xl bg-gradient-to-r from-blue-50/80 to-white border border-blue-100 flex flex-wrap items-center justify-between gap-3">
+                  <div class="flex-1 min-w-[200px]">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-[11px] font-extrabold text-[#003B6F]">${p.sender}</span>
+                      ${p.prayed ? `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-700">መጋቢው ጸልየውበታል ✓</span>` : ""}
+                    </div>
+                    <p class="text-xs text-slate-700 leading-relaxed">${p.text}</p>
+                  </div>
+                  <button onclick="joinMemberPrayer('${p.id}')" class="px-3 py-1.5 rounded-xl bg-white hover:bg-[#D84374] text-[#D84374] hover:text-white border border-pink-200 text-[11px] font-extrabold transition flex items-center gap-1.5 shrink-0 shadow-sm">
+                    <i data-lucide="heart" class="w-3.5 h-3.5"></i>
+                    <span>አብሬ እጸልያለሁ (${p.amenCount || 1})</span>
+                  </button>
+                </div>
+              `
+              )
+              .join("");
+
+      // Logged-in Member View
+      if (state.currentMember) {
+        const m = state.currentMember;
+        document.getElementById("topbar-member-name").textContent = `${m.fullName} (${m.id})`;
+        document.getElementById("member-card-fullname").textContent = m.fullName;
+        document.getElementById("member-card-id").textContent = m.id;
+
+        // Direct Messages from Pastor to this Member
+        const dmBox = document.getElementById("member-direct-messages-box");
+        const dmList = document.getElementById("member-direct-messages-list");
+        if (m.directMessages && m.directMessages.length > 0) {
+          dmBox.classList.remove("hidden");
+          dmList.innerHTML = m.directMessages
+            .map(
+              (dm) => `
+              <div class="p-3 rounded-2xl bg-pink-50/80 border border-pink-200 text-xs">
+                <div class="flex justify-between text-[10px] font-bold text-[#D84374] mb-1">
+                  <span>ከመጋቢው የተላከ መልዕክት</span>
+                  <span>${dm.date || ""}</span>
+                </div>
+                <p class="text-slate-800 font-semibold">${dm.text}</p>
+              </div>
+            `
+            )
+            .join("");
+        } else {
+          dmBox.classList.add("hidden");
+        }
+
+        const cardImg = document.getElementById("member-card-photo");
+        const cardIcon = document.getElementById("member-card-photo-icon");
+        if (m.photoUrl) {
+          cardImg.src = m.photoUrl;
+          cardImg.classList.remove("hidden");
+          cardIcon.classList.add("hidden");
+        } else {
+          cardImg.classList.add("hidden");
+          cardIcon.classList.remove("hidden");
+        }
+
+        renderQRCodesForMember(m);
+
+        const approvedDepts = state.departments.filter((d) => m.deptStatus?.[d.id] === "approved");
+        document.getElementById("id-card-dept-count").textContent =
+          approvedDepts.length > 0
+            ? `${approvedDepts.length} ህብረት (${approvedDepts.map((d) => d.name.replace("የ", "").replace(" አገልግሎት", "").replace(" ህብረት", "")).join(", ")})`
+            : "0 ህብረት (የመጋቢውን መልዕክት ብቻ)";
+
+        document.getElementById("member-departments-list").innerHTML = state.departments
+          .map((d) => {
+            const st = m.deptStatus?.[d.id] || "none";
+            let actionBadge = "";
+            if (st === "approved") {
+              actionBadge = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">ተፈቅዷል ✓</span>`;
+            } else if (st === "pending") {
+              actionBadge = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-amber-100 text-amber-800 border border-amber-200">በመጠባበቅ ላይ...</span>`;
+            } else {
+              actionBadge = `<button onclick="requestJoinDept('${d.id}')" class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-[#0066B3] text-white hover:bg-[#003B6F] transition">ለመቀላቀል ጠይቅ</button>`;
+            }
+            return `
+              <div class="flex items-center justify-between p-2.5 rounded-2xl bg-blue-50/70 border border-blue-100">
+                <div>
+                  <p class="text-xs font-extrabold text-[#003B6F]">${d.name}</p>
+                  <p class="text-[10px] text-slate-500">መሪ: ${d.leader}</p>
+                </div>
+                ${actionBadge}
+              </div>
+            `;
+          })
+          .join("");
+
+        const approvedFeedEl = document.getElementById("approved-dept-messages");
+        const hasAnyDeptMsg = approvedDepts.some((d) => d.messages && d.messages.length > 0);
+        if (approvedDepts.length === 0) {
+          approvedFeedEl.innerHTML = `
+            <div class="p-6 rounded-2xl bg-blue-50/60 border border-dashed border-blue-200 text-center">
+              <p class="text-xs font-bold text-[#003B6F]">እስካሁን በህብረት መሪ የጸደቀልዎ ዘርፍ የለም።</p>
+              <p class="text-[11px] text-slate-500 mt-1">የህብረት መሪ ፈቃድ እስኪሰጥ ድረስ ከላይ ያለውን የመጋቢውን መልዕክት ብቻ መመልከት ይችላሉ።</p>
+            </div>
+          `;
+        } else if (!hasAnyDeptMsg) {
+          approvedFeedEl.innerHTML = `
+            <div class="p-6 rounded-2xl bg-blue-50/60 border border-dashed border-blue-200 text-center">
+              <p class="text-xs font-bold text-[#003B6F]">የተፈቀደልዎ ህብረት ገና አዲስ መልዕክት አልለጠፈም።</p>
+            </div>
+          `;
+        } else {
+          approvedFeedEl.innerHTML = approvedDepts
+            .map((d) =>
+              (d.messages || [])
+                .map(
+                  (msg) => `
+                <div class="p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50/40 border border-blue-200/80">
+                  <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-[#0066B3] text-white">${d.name}</span>
+                    <div class="flex items-center gap-2 text-[11px]">
+                      ${msg.eventTime ? `<span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold">⏰ ${msg.eventTime}</span>` : ""}
+                      <span class="text-slate-400">${msg.time}</span>
+                    </div>
+                  </div>
+                  <h4 class="text-sm font-extrabold text-[#003B6F]">${msg.title}</h4>
+                  <p class="text-xs text-slate-700 mt-1 leading-relaxed">${msg.body}</p>
+                </div>
+              `
+                )
+                .join("")
+            )
+            .join("");
+        }
+
+        const myReceipts = state.receipts.filter((r) => r.phone === m.phone);
+        document.getElementById("member-receipts-list").innerHTML = myReceipts
+          .slice(0, 3)
+          .map(
+            (r) => `
+            <div class="flex items-center justify-between text-[11px] p-2 rounded-xl bg-blue-50/70">
+              <div>
+                <span class="font-bold text-[#003B6F]">${r.type}</span> • <span class="font-mono text-slate-500">${r.ref}</span>
+              </div>
+              <span class="font-bold ${r.status === "verified" ? "text-emerald-700" : "text-amber-700"}">
+                ${r.amount} ብር (${r.status === "verified" ? "ተረጋግጧል" : "በመታየት ላይ"})
+              </span>
+            </div>
+          `
+          )
+          .join("");
+      }
+
+      // Pastor Leader Emails & Codes Control Table
+      document.getElementById("pastor-leader-codes-table").innerHTML = state.departments
+        .map(
+          (d) => `
+          <div class="p-3.5 rounded-2xl bg-blue-50/60 border border-blue-200/70 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 flex-1">
+              <div>
+                <label class="block text-[10px] font-bold text-[#003B6F]">${d.name} (መሪ)</label>
+                <input id="leader-input-${d.id}" type="text" value="${d.leader}" class="mt-0.5 px-2.5 py-1.5 rounded-lg border border-blue-200 text-xs font-semibold bg-white w-full" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-[#003B6F]">የተፈቀደ ኢሜይል</label>
+                <input id="email-input-${d.id}" type="email" value="${d.leaderEmail || ""}" class="mt-0.5 px-2.5 py-1.5 rounded-lg border border-blue-200 text-xs font-mono bg-white w-full" />
+              </div>
+            </div>
+            <div class="flex items-end gap-2">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500">ኮድ (PIN)</label>
+                <input id="code-input-${d.id}" type="text" value="${d.accessCode}" class="px-2.5 py-1.5 rounded-lg border border-blue-200 text-xs font-mono font-bold uppercase w-24 bg-white" />
+              </div>
+              <button onclick="updateLeaderCode('${d.id}')" class="px-3.5 py-1.5 rounded-xl bg-[#0066B3] hover:bg-[#003B6F] text-white text-xs font-bold transition">
+                አዘምን
+              </button>
+            </div>
+          </div>
+        `
+        )
+        .join("");
+
+      // Pastor Real Prayer List (ONLY newly submitted prayers!)
+      const pastorPrayerEl = document.getElementById("pastor-prayer-list");
+      pastorPrayerEl.innerHTML =
+        state.prayerRequests.length === 0
+          ? `<div class="p-5 text-center text-xs text-slate-400 bg-blue-50/50 rounded-2xl">እስካሁን አዲስ የጸሎት ርዕስ አልተላከም።</div>`
+          : state.prayerRequests
+              .map(
+                (p) => `
+                <div class="p-3 rounded-2xl border ${p.prayed ? "bg-emerald-50/70 border-emerald-200" : "bg-blue-50/70 border-blue-200"}">
+                  <div class="flex items-center justify-between mb-1">
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-[11px] font-extrabold text-[#003B6F]">${p.sender}</span>
+                      <span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${p.visibility === "pastor" ? "bg-pink-100 text-[#D84374]" : "bg-blue-100 text-[#0066B3]"}">
+                        ${p.visibility === "pastor" ? "ለመጋቢው ብቻ" : "ለሁሉም"}
+                      </span>
+                    </div>
+                    <button onclick="togglePrayed('${p.id}')" class="px-2 py-0.5 rounded-lg text-[10px] font-bold ${p.prayed ? "bg-emerald-600 text-white" : "bg-white border border-blue-200 text-[#003B6F]"}">
+                      ${p.prayed ? "ተጸልዮበታል ✓" : "ጸልይለት"}
+                    </button>
+                  </div>
+                  <p class="text-xs text-slate-700">${p.text}</p>
+                </div>
+              `
+              )
+              .join("");
+
+      // Leader Gate & Isolated Dashboard
+      const loginSelect = document.getElementById("login-dept-select");
+      const currentSelected = loginSelect.value || "choir";
+      loginSelect.innerHTML = state.departments
+        .map((d) => `<option value="${d.id}" ${d.id === currentSelected ? "selected" : ""}>${d.name} (${d.leader})</option>`)
+        .join("");
+
+      const gateEl = document.getElementById("leader-login-gate");
+      const dashEl = document.getElementById("leader-dashboard-content");
+      if (!state.authenticatedLeaderDeptId) {
+        gateEl.classList.remove("hidden");
+        dashEl.classList.add("hidden");
+      } else {
+        gateEl.classList.add("hidden");
+        dashEl.classList.remove("hidden");
+        const activeDept = state.departments.find((d) => d.id === state.authenticatedLeaderDeptId);
+        document.getElementById("active-leader-dept-title").textContent = activeDept.name;
+        document.getElementById("active-leader-name").textContent = `መሪ: ${activeDept.leader} (${activeDept.leaderEmail}) • ኮድ: ${activeDept.accessCode}`;
+
+        const pendingMembersForDept = state.members.filter((m) => m.deptStatus?.[activeDept.id] === "pending");
+        const queueEl = document.getElementById("leader-approval-queue");
+        if (pendingMembersForDept.length > 0) {
+          queueEl.innerHTML = pendingMembersForDept
+            .map(
+              (pm) => `
+              <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200">
+                <p class="text-xs font-extrabold text-slate-800">${pm.fullName}</p>
+                <p class="text-[11px] text-slate-500 mb-3">${pm.phone} • ወደ ${activeDept.name} ለመቀላቀል ፈቃድ ጠይቀዋል</p>
+                <div class="flex gap-2">
+                  <button onclick="decideMemberJoin('${pm.id}', '${activeDept.id}', 'approved')" class="flex-1 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700">ፍቀድ (Approve)</button>
+                  <button onclick="decideMemberJoin('${pm.id}', '${activeDept.id}', 'none')" class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-600 text-xs font-bold">ውድቅ</button>
+                </div>
+              </div>
+            `
+            )
+            .join("");
+        } else {
+          queueEl.innerHTML = `<p class="text-xs text-slate-500 bg-blue-50/70 p-4 rounded-2xl text-center">በአሁኑ ሰዓት አዲስ የመቀላቀል ጥያቄ የለም።</p>`;
+        }
+
+        // Approved Members Attendance Checklist
+        const approvedDeptMembers = state.members.filter((m) => m.deptStatus?.[activeDept.id] === "approved");
+        const attListEl = document.getElementById("leader-attendance-members-list");
+        if (approvedDeptMembers.length === 0) {
+          attListEl.innerHTML = `<p class="text-[11px] text-slate-400 text-center py-3 bg-blue-50/50 rounded-xl">በዚህ ህብረት ውስጥ የተመዘገቡ አባላት ገና የሉም።</p>`;
+        } else {
+          attListEl.innerHTML = approvedDeptMembers
+            .map((am) => {
+              const absCount = Number(am.absences?.[activeDept.id] || 0);
+              return `
+                <label class="flex items-center justify-between p-2.5 rounded-xl bg-blue-50/70 border border-blue-100 cursor-pointer">
+                  <div>
+                    <span class="text-xs font-bold text-[#003B6F] block">${am.fullName}</span>
+                    <span class="text-[10px] ${absCount >= 3 ? "text-[#D84374] font-extrabold" : "text-slate-500"}">
+                      ቀሪ (Absences): ${absCount} ጊዜ ${absCount >= 3 ? "⚠️" : ""}
+                    </span>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <input id="att-cb-${am.id}" type="checkbox" checked class="w-4 h-4 rounded text-[#0066B3]" />
+                    <span class="text-[11px] font-bold text-emerald-700">ተገኝቷል</span>
+                  </div>
+                </label>
+              `;
+            })
+            .join("");
+        }
+
+        document.getElementById("leader-sent-messages").innerHTML =
+          (activeDept.messages || []).length === 0
+            ? `<p class="text-xs text-slate-400 text-center py-4 bg-blue-50/50 rounded-2xl">እስካሁን የተላከ የህብረት መልዕክት የለም።</p>`
+            : activeDept.messages
+                .map(
+                  (m) => `
+                  <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100">
+                    <div class="flex justify-between text-[11px] text-slate-400 mb-1">
+                      <span class="font-bold text-[#003B6F]">${m.title} ${m.eventTime ? `(${m.eventTime})` : ""}</span>
+                      <span>${m.time}</span>
+                    </div>
+                    <p class="text-xs text-slate-700">${m.body}</p>
+                  </div>
+                `
+                )
+                .join("");
+      }
+
+      // Membership Admin Searchable Directory (By Name, Phone, Neighborhood, Ministry)
+      const memSearch = (document.getElementById("mem-admin-search")?.value || "").trim().toLowerCase();
+      const memDeptFilter = document.getElementById("mem-admin-dept-filter")?.value || "all";
+      const filteredMemAdmin = state.members.filter((m) => {
+        const matchText =
+          !memSearch ||
+          (m.fullName || "").toLowerCase().includes(memSearch) ||
+          (m.phone || "").toLowerCase().includes(memSearch) ||
+          (m.address || "").toLowerCase().includes(memSearch);
+        if (!matchText) return false;
+        if (memDeptFilter === "all") return true;
+        if (memDeptFilter === "none") {
+          return !Object.values(m.deptStatus || {}).includes("approved");
+        }
+        return m.deptStatus?.[memDeptFilter] === "approved";
+      });
+
+      const badgeTotalEl = document.getElementById("membership-admin-total-badge");
+      if (badgeTotalEl) badgeTotalEl.textContent = `${filteredMemAdmin.length} / ${state.members.length} አባላት`;
+
+      const memAdminListEl = document.getElementById("membership-admin-list");
+      if (memAdminListEl) {
+        memAdminListEl.innerHTML =
+          filteredMemAdmin.length === 0
+            ? `<div class="p-8 text-center text-xs text-slate-400 bg-blue-50/50 rounded-2xl">በዚህ ፍለጋ የተገኘ አባል የለም።</div>`
+            : filteredMemAdmin
+                .map((m) => {
+                  const depts = state.departments
+                    .filter((d) => m.deptStatus?.[d.id] === "approved")
+                    .map((d) => d.name)
+                    .join(", ");
+                  return `
+                    <div class="p-3.5 rounded-2xl bg-blue-50/60 border border-blue-200/70 flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                          <span class="text-xs font-extrabold text-[#003B6F]">${m.fullName}</span>
+                          <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-[#003B6F] text-white">${m.phone}</span>
+                          <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-100 text-[#0066B3]">ሰፈር: ${m.address || "ቦሌ"}</span>
+                          <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${m.registrationType?.includes("Offline") ? "bg-amber-100 text-amber-800" : "bg-emerald-100 text-emerald-800"}">${m.registrationType || "Online"}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-600 mt-1">የሚያገለግሉበት ዘርፍ: <strong>${depts || "አጠቃላይ ምዕመን"}</strong> • መለያ: ${m.id}</p>
+                      </div>
+                    </div>
+                  `;
+                })
+                .join("");
+      }
+
+      // Finance Ledger
+      const pendingReceipts = state.receipts.filter((r) => r.status === "pending");
+      const verifiedTotal = state.receipts
+        .filter((r) => r.status === "verified")
+        .reduce((sum, r) => sum + Number(r.amount || 0), 0);
+
+      document.getElementById("finance-total-verified").textContent = `${verifiedTotal.toLocaleString()} ብር`;
+      document.getElementById("finance-pending-count").textContent = `${pendingReceipts.length} ደረሰኝ`;
+      document.getElementById("finance-blocked-count").textContent = `${state.blockedFraudCount} ሙከራ`;
+
+      const searchQuery = (document.getElementById("finance-search")?.value || "").trim().toLowerCase();
+      const filteredReceipts = state.receipts.filter((r) => {
+        const matchesFilter = state.financeFilter === "all" || r.status === state.financeFilter;
+        const matchesSearch =
+          !searchQuery ||
+          (r.member || "").toLowerCase().includes(searchQuery) ||
+          (r.ref || "").toLowerCase().includes(searchQuery) ||
+          (r.type || "").toLowerCase().includes(searchQuery);
+        return matchesFilter && matchesSearch;
+      });
+
+      document.getElementById("finance-ledger-list").innerHTML =
+        filteredReceipts.length === 0
+          ? `<div class="p-6 text-center text-xs text-slate-500 bg-blue-50/50 rounded-2xl">እስካሁን በዳታቤዝ የተመዘገበ ደረሰኝ የለም።</div>`
+          : filteredReceipts
+              .map(
+                (r) => `
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-blue-50/60 border border-blue-200/70 hover:bg-blue-50 transition">
+                  <div class="space-y-1">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="text-xs font-extrabold text-[#003B6F]">${r.member}</span>
+                      <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-[#003B6F] text-white">${r.ref}</span>
+                      <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-100 text-[#0066B3]">${r.method || "Bank"}</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600">${r.type} • ስልክ: ${r.phone || "0911-000000"} • ${r.date}</p>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-sm font-black text-[#003B6F]">${Number(r.amount || 0).toLocaleString()} ብር</span>
+                    ${
+                      r.status === "verified"
+                        ? `<span class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">ተረጋግጧል ✓</span>`
+                        : `<button onclick="verifyReceipt('${r.id}')" class="px-4 py-1.5 rounded-xl bg-[#0066B3] hover:bg-[#003B6F] text-white text-xs font-extrabold shadow-sm transition">አረጋግጥ (Verify)</button>`
+                    }
+                  </div>
+                </div>
+              `
+              )
+              .join("");
+
+      lucide.createIcons();
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user && user.emailVerified) {
+        const em = (user.email || "").toLowerCase();
+        if ((state.authorizedEmails.pastor || []).includes(em)) state.authenticatedAdmins.pastor = em;
+        if ((state.authorizedEmails.finance || []).includes(em)) state.authenticatedAdmins.finance = em;
+        if ((state.authorizedEmails.membership || []).includes(em)) state.authenticatedAdmins.membership = em;
+        renderAll();
+      }
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      syncPastorInputs();
+      syncAdminEmailInputs();
+      initFirestoreListeners();
+      const initialHash = window.location.hash.replace("#/", "");
+      navigateTo(initialHash || "member");
+      runSplash();
+    });
+  </script>
+</body>
+</html>
