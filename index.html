@@ -623,9 +623,15 @@
             <label class="block text-xs font-bold text-slate-700 mb-1">የይለፍ ቃል (Password)</label>
             <input id="pastor-login-pass" type="password" required value="admin123" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/40" />
           </div>
-          <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
-            ወደ መጋቢው ዳሽቦርድ ግባ →
-          </button>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+            <button type="button" onclick="sendAdminVerificationEmail('pastor')" class="py-3 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#003B6F] border border-amber-300 text-xs font-extrabold transition flex items-center justify-center gap-1.5">
+              <i data-lucide="send" class="w-3.5 h-3.5 text-[#D84374]"></i> ኢሜይል አረጋግጥ (Verify)
+            </button>
+            <button type="submit" class="py-3 px-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
+              ወደ መጋቢው ዳሽቦርድ ግባ →
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500 text-center">ኢሜይልዎን ለማረጋገጥ መጀመሪያ <strong>“ኢሜይል አረጋግጥ”</strong> ይጫኑ፣ በኢሜይልዎ የመጣውን ሊንክ ይክፈቱ፣ ከዚያ ይግቡ።</p>
         </form>
       </div>
 
@@ -918,9 +924,15 @@
             <label class="block text-xs font-bold text-slate-700 mb-1">የይለፍ ቃል (Password)</label>
             <input id="finance-login-pass" type="password" required value="finance123" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/40" />
           </div>
-          <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
-            ወደ ፋይናንስ ዳሽቦርድ ግባ →
-          </button>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+            <button type="button" onclick="sendAdminVerificationEmail('finance')" class="py-3 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#003B6F] border border-amber-300 text-xs font-extrabold transition flex items-center justify-center gap-1.5">
+              <i data-lucide="send" class="w-3.5 h-3.5 text-[#D84374]"></i> ኢሜይል አረጋግጥ (Verify)
+            </button>
+            <button type="submit" class="py-3 px-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
+              ወደ ፋይናንስ ዳሽቦርድ ግባ →
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500 text-center">በFirebase የተረጋገጠ (Email Verified) አድሚን ኢሜይል ብቻ ይገባል።</p>
         </form>
       </div>
 
@@ -997,9 +1009,15 @@
             <label class="block text-xs font-bold text-slate-700 mb-1">የይለፍ ቃል (Password)</label>
             <input id="membership-login-pass" type="password" required value="memberadmin123" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-xs bg-blue-50/40" />
           </div>
-          <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
-            ወደ አባላት መዝገብ አድሚን ግባ →
-          </button>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+            <button type="button" onclick="sendAdminVerificationEmail('membership')" class="py-3 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#003B6F] border border-amber-300 text-xs font-extrabold transition flex items-center justify-center gap-1.5">
+              <i data-lucide="send" class="w-3.5 h-3.5 text-[#D84374]"></i> ኢሜይል አረጋግጥ (Verify)
+            </button>
+            <button type="submit" class="py-3 px-3 rounded-xl bg-gradient-to-r from-[#0066B3] to-[#003B6F] text-white text-xs font-extrabold shadow-md hover:opacity-95 transition">
+              ወደ አባላት መዝገብ አድሚን ግባ →
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500 text-center">በFirebase የማረጋገጫ ሊንክ የተረጋገጠ ኢሜይል ይጠይቃል።</p>
         </form>
       </div>
 
@@ -1337,6 +1355,10 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
     import {
+      getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+      sendEmailVerification, signOut, onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
       getFirestore, doc, setDoc, updateDoc, collection, addDoc,
       onSnapshot, query, orderBy, getDocs, where
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -1353,6 +1375,7 @@
 
     const app = initializeApp(firebaseConfig);
     try { getAnalytics(app); } catch (_) {}
+    const auth = getAuth(app);
     const db = getFirestore(app);
 
     let uploadedPhotoDataUrl = "";
@@ -1513,21 +1536,91 @@
       showToast("የተፈቀዱ ኢሜይሎች ተቀምጠዋል!");
     };
 
-    window.authenticateAdminRole = function (e, role) {
+    window.sendAdminVerificationEmail = async function (role) {
+      const email = (document.getElementById(`${role}-login-email`)?.value || "").trim().toLowerCase();
+      const pass = (document.getElementById(`${role}-login-pass`)?.value || "").trim();
+      const allowed = state.authorizedEmails[role] || [];
+
+      if (!email) {
+        showToast("እባክዎ መጀመሪያ ኢሜይልዎን ያስገቡ!", true);
+        return;
+      }
+      if (!allowed.includes(email)) {
+        showToast(`ይህ ኢሜይል (${email}) በቤተክርስቲያኒቱ የተፈቀደ አይደለም!`, true);
+        return;
+      }
+      if (pass.length < 6) {
+        showToast("የማረጋገጫ ኢሜይል ለመላክ የይለፍ ቃሉ ቢያንስ 6 ፊደል/ቁጥር መሆን አለበት!", true);
+        return;
+      }
+
+      try {
+        let cred;
+        try {
+          cred = await signInWithEmailAndPassword(auth, email, pass);
+        } catch (signInErr) {
+          if (signInErr.code === "auth/user-not-found" || signInErr.code === "auth/invalid-credential") {
+            cred = await createUserWithEmailAndPassword(auth, email, pass);
+          } else {
+            throw signInErr;
+          }
+        }
+
+        if (cred.user.emailVerified) {
+          showToast(`ኢሜይልዎ (${email}) ቀድሞ በFirebase ተረጋግጧል! አሁን “ግባ” ይጫኑ።`);
+        } else {
+          await sendEmailVerification(cred.user);
+          showToast(`የማረጋገጫ ሊንክ ወደ ${email} ተልኳል! ኢሜይልዎን (Inbox/Spam) ከፍተው ያረጋግጡና ተመልሰው ይግቡ።`);
+        }
+      } catch (err) {
+        showToast(`የFirebase ኢሜይል ማረጋገጫ ስህተት: ${err.message}`, true);
+      }
+    };
+
+    window.authenticateAdminRole = async function (e, role) {
       e.preventDefault();
       const email = document.getElementById(`${role}-login-email`).value.trim().toLowerCase();
+      const pass = document.getElementById(`${role}-login-pass`).value.trim();
       const allowed = state.authorizedEmails[role] || [];
+
       if (!allowed.includes(email)) {
         showToast(`ይህ ኢሜይል (${email}) ለዚህ ክፍል አልተፈቀደም!`, true);
         return;
       }
-      state.authenticatedAdmins[role] = email;
-      showToast(`በተፈቀደ ኢሜይል (${email}) ገብተዋል።`);
-      renderAll();
+
+      try {
+        let cred;
+        try {
+          cred = await signInWithEmailAndPassword(auth, email, pass);
+        } catch (signInErr) {
+          if (signInErr.code === "auth/user-not-found" || signInErr.code === "auth/invalid-credential") {
+            cred = await createUserWithEmailAndPassword(auth, email, pass);
+            await sendEmailVerification(cred.user);
+            showToast(`አዲስ የማረጋገጫ ሊንክ ወደ ${email} ተልኳል! በኢሜይልዎ ያረጋግጡና እንደገና ይግቡ።`, true);
+            return;
+          }
+          throw signInErr;
+        }
+
+        // Reload user to get latest emailVerified status from Firebase
+        await cred.user.reload();
+        if (!cred.user.emailVerified) {
+          await sendEmailVerification(cred.user);
+          showToast(`ኢሜይልዎ (${email}) ገና አልተረጋገጠም! የማረጋገጫ ሊንኩን በኢሜይልዎ ይክፈቱና ያረጋግጡ።`, true);
+          return;
+        }
+
+        state.authenticatedAdmins[role] = cred.user.email;
+        showToast(`ኢሜይል (${cred.user.email}) በFirebase ተረጋግጦ ገብተዋል!`);
+        renderAll();
+      } catch (err) {
+        showToast(`መግባት አልተቻለም: ${err.message}`, true);
+      }
     };
 
-    window.logoutAdminRole = function (role) {
+    window.logoutAdminRole = async function (role) {
       state.authenticatedAdmins[role] = null;
+      try { await signOut(auth); } catch (_) {}
       renderAll();
     };
 
@@ -2741,6 +2834,16 @@
 
       lucide.createIcons();
     }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user && user.emailVerified) {
+        const em = (user.email || "").toLowerCase();
+        if ((state.authorizedEmails.pastor || []).includes(em)) state.authenticatedAdmins.pastor = em;
+        if ((state.authorizedEmails.finance || []).includes(em)) state.authenticatedAdmins.finance = em;
+        if ((state.authorizedEmails.membership || []).includes(em)) state.authenticatedAdmins.membership = em;
+        renderAll();
+      }
+    });
 
     window.addEventListener("DOMContentLoaded", () => {
       syncPastorInputs();
